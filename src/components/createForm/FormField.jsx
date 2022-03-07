@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ReactComponent as CloseIcon } from '../assets/icon-close.svg';
-import { ReactComponent as UpDownArrow } from '../assets/icon-up-down.svg';
+import { ReactComponent as CloseIcon } from '../../assets/icon-close.svg';
+import { ReactComponent as UpDownArrow } from '../../assets/icon-up-down.svg';
 
 const FormField = () => {
   return (

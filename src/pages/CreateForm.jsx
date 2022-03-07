@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import FormField from '../components/FormField';
+import FormField from '../components/createForm/FormField';
+import DragnDrop from '../components/createForm/DragnDrop';
 
 export default function CreateForm() {
   return (
@@ -14,6 +15,7 @@ export default function CreateForm() {
         <label>필드목록</label>
         <FormField />
       </section>
+      <DragnDrop />
     </Wrapper>
   );
 }
