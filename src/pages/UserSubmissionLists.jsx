@@ -1,18 +1,37 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import styled, { css } from 'styled-components';
-import List from '../components/UserSubmissionLists/List';
+import ListC from '../components/UserSubmissionLists/List';
 import { Link } from 'react-router-dom';
+import Modal from '../components/UserSubmissionLists/Modal';
+import useInfinityScroll from '../hooks/useInfinityScroll';
 
 export default function UserSubmissionList() {
+  const temporaryArr = new Array(50).fill(0);
+  const targetRef = useRef(null);
+  const newMatchLIst = useInfinityScroll(targetRef, temporaryArr, 10);
+
+  const [modalState, setModalState] = useState(false);
+
   return (
-    <Div>
-      <H1>제출목록</H1>
-      <p style={{ marginBottom: ' 20px', textAlign: 'left' }}>응답 2개</p>
-      <List>제출한 폼 제목</List>
-      <Link to="/">
-        <Button>확인</Button>
-      </Link>
-    </Div>
+    <>
+      <Div>
+        <H1>제출목록</H1>
+        <p style={{ marginBottom: ' 20px', textAlign: 'left' }}>응답 2개</p>
+        {newMatchLIst.map((el, idx) => (
+          <ListC
+            key={idx}
+            setModalState={setModalState}
+            ref={idx + 1 === newMatchLIst.length ? targetRef : undefined}
+          >
+            제출한 폼 제목
+          </ListC>
+        ))}
+        <Link to="/">
+          <Button>확인</Button>
+        </Link>
+      </Div>
+      {modalState && <Modal setModalState={setModalState} />}
+    </>
   );
 }
 const H1 = styled.h1`
