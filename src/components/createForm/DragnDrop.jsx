@@ -19,14 +19,12 @@ function DragnDrop() {
 
   const onDragStart = (e) => {
     setGrab(e.target);
-    e.target.classList.add('grabbing');
+
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData('text/html', e.target);
   };
 
   const onDragEnd = (e) => {
-    e.target.classList.remove('grabbing');
-
     e.dataTransfer.dropEffect = 'move';
   };
 
