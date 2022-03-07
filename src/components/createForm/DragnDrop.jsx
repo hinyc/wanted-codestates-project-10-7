@@ -1,17 +1,15 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import { useDragAndDrop } from '../../utils/hooks/useDragAndDrop';
-// import
 
 function DragnDrop() {
   const socialNetworks = [
-    { title: 'Twitter', color: 'white', backgroundColor: 'Red' },
-    { title: 'Facebook', color: 'black', backgroundColor: 'Orange' },
-    { title: 'Line', color: 'black', backgroundColor: 'Yellow' },
-    { title: 'Instagram', color: 'white', backgroundColor: 'Green' },
-    { title: 'Telegram', color: 'white', backgroundColor: 'Blue' },
-    { title: 'KaKao', color: 'white', backgroundColor: 'DarkBlue' },
-    { title: 'LinkedIn', color: 'white', backgroundColor: 'Purple' },
+    { title: 'Twitter' },
+    { title: 'Facebook' },
+    { title: 'Line' },
+    { title: 'Instagram' },
+    { title: 'Telegram' },
+    { title: 'KaKao' },
+    { title: 'LinkedIn' },
   ];
   const [lists, setLists] = useState(socialNetworks);
   const [grab, setGrab] = useState(null);
