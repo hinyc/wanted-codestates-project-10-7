@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import GlobalStyles from './GlobalStyles';
 import Main from './pages/Main';
 import styled from 'styled-components';
+import UserSubmissionList from './pages/UserSubmissionList';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <AllWrapper>
         <Routes>
           <Route path="/" element={<Main />} />
+          <Route path="/submission" element={<UserSubmissionList />} />
         </Routes>
       </AllWrapper>
     </Router>
