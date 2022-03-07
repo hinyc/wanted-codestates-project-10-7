@@ -1,14 +1,17 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import List from '../components/UserSubmissionLists/List';
+import { Link } from 'react-router-dom';
 
 export default function UserSubmissionList() {
   return (
     <Div>
       <H1>제출목록</H1>
       <p style={{ marginBottom: ' 20px', textAlign: 'left' }}>응답 2개</p>
-      <List>설문제목</List>
-      <Button>확인</Button>
+      <List>제출한 폼 제목</List>
+      <Link to="/">
+        <Button>확인</Button>
+      </Link>
     </Div>
   );
 }
