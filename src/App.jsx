@@ -27,11 +27,11 @@ function App() {
 export default App;
 
 const AllWrapper = styled.div`
-  width: 500px;
+  width: 100%;
   height: auto;
   min-height: 100vh;
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
 `;
