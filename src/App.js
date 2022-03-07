@@ -3,17 +3,35 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import GlobalStyles from './GlobalStyles';
 import Main from './pages/Main';
 import CreateForm from './pages/CreateForm';
+import styled from 'styled-components';
+import UserSubmissionList from './pages/UserSubmissionLists';
+
 
 function App() {
   return (
     <Router>
       <GlobalStyles />
-      <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/create-form" element={<CreateForm />} />
-      </Routes>
+
+      <AllWrapper>
+        <Routes>
+          <Route path="/" element={<Main />} />
+            <Route path="/create-form" element={<CreateForm />} />
+          <Route path="/submission" element={<UserSubmissionList />} />
+        </Routes>
+      </AllWrapper>
+
     </Router>
   );
 }
 
 export default App;
+
+const AllWrapper = styled.div`
+  width: 500px;
+  height: auto;
+  min-height: 100vh;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+`;
