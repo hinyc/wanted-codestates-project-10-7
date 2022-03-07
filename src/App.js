@@ -20,5 +20,11 @@ function App() {
 export default App;
 
 const AllWrapper = styled.div`
-  width: 1000px;
+  width: 500px;
+  height: auto;
+  min-height: 100vh;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 `;
