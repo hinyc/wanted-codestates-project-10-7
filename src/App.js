@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import GlobalStyles from './GlobalStyles';
 import Main from './pages/Main';
 import styled from 'styled-components';
-import UserSubmissionList from './pages/UserSubmissionList';
+import UserSubmissionList from './pages/UserSubmissionLists';
 
 function App() {
   return (
