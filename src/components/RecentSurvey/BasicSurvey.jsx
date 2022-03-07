@@ -49,8 +49,7 @@ const TopBox = styled.div`
   }
 
   &:hover {
-    color: #fff;
-    background-color: #00b9ff;
+    color: #00b9ff;
     box-shadow: 0px 2px 5px rgba(200, 200, 200, 0.6);
     transition: all 0.35s ease;
   }
