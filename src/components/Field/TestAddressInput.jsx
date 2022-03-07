@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import SearchAddress from './SearchAddress';
 
-const AddressInput = () => {
+const TestAddressInput = () => {
   // 주소 기능 테스트용 컴포넌트 삭제해도 됨
   const [isOpen, setIsOpen] = useState(false);
   const openHandler = () => {
@@ -45,4 +45,4 @@ const ClickBox = styled.div`
   cursor: pointer;
 `;
 
-export default AddressInput;
+export default TestAddressInput;
