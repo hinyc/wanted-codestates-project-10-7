@@ -1,13 +1,16 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 
-export default function UserSubmissionList({ children }) {
+const ListC = React.forwardRef(({ children, setModalState }, ref) => {
+  const ModalOpenHandler = () => setModalState(true);
   return (
     <div>
-      <List>{children}</List>
+      <List onClick={ModalOpenHandler} ref={ref}>
+        {children}
+      </List>
     </div>
   );
-}
+});
 const List = styled.div`
   width: 400px;
   height: 50px;
@@ -20,4 +23,8 @@ const List = styled.div`
   border-radius: 6px;
   margin-bottom: 20px;
   cursor: pointer;
+  &:hover {
+    background-color: rgb(188, 188, 188);
+  }
 `;
+export default ListC;
