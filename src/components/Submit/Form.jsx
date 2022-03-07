@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
-
+import AttachmentFile from '../Fields/attachmentFile';
 export default function Form({ data }) {
   const [showVerification, setShowVerification] = useState(false);
   const value = useRef('');
@@ -64,12 +64,7 @@ export default function Form({ data }) {
           </div>
         </form>
       )}
-      {type === 'file' && (
-        <form>
-          <label>{data.required ? data.label : `${data.label}(선택)`}</label>
-          <input type="file" />
-        </form>
-      )}
+      {type === 'file' && <AttachmentFile data={data} />}
 
       {type === 'agreement' && (
         <Agreement>
@@ -110,7 +105,6 @@ const Container = styled.div`
     color: #adacad;
     margin: 10px 0;
   }
-
   input {
     width: 100%;
     height: 48px;
@@ -131,7 +125,6 @@ const Container = styled.div`
       font-weight: 700;
     }
   }
-
   input.file {
     width: 90%;
     height: 200px;
