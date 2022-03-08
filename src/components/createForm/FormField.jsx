@@ -5,18 +5,24 @@ import { ReactComponent as UpDownArrow } from '../../assets/icon-up-down.svg';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { EditorState } from 'draft-js';
+import DropDownOptionInput from './DropDownOptionInput';
 
 const FormField = () => {
+  const [selectedType, setSelectedType] = useState('text');
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
   const onEditorStateChange = (editorState) => {
     setEditorState(editorState);
   };
 
+  const setSelectValue = ({ target: { value } }) => {
+    setSelectedType(value);
+  };
+
   return (
     <Container>
       <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
-        <select>
+        <select onChange={setSelectValue}>
           <option value="text">텍스트</option>
           <option value="phone">전화번호</option>
           <option value="address">주소</option>
@@ -37,7 +43,11 @@ const FormField = () => {
         </button>
       </div>
       <div className="placeholder-description">
-        <input type="text" placeholder="플레이스홀더 예" />
+        {selectedType === 'dropdown' ? (
+          <DropDownOptionInput />
+        ) : (
+          <input type="text" placeholder="플레이스홀더 예" />
+        )}
       </div>
       <EditorWrapper>
         <Editor

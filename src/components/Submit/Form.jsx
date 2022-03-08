@@ -62,7 +62,7 @@ export default function Form({ data }) {
   return (
     <Container>
       {type === 'text' && (
-        <form>
+        <FormSt>
           <label>{data.required ? data.label : `${data.label}(선택)`}</label>
           <input
             ref={value}
@@ -76,24 +76,24 @@ export default function Form({ data }) {
               {showVerification && '이름 항목은 필수 정보입니다.'}
             </div>
           ) : null}
-        </form>
+        </FormSt>
       )}
 
       {type === 'phone' && (
-        <form>
+        <FormSt>
           <label>{data.required ? data.label : `${data.label}(선택)`}</label>
           <input onBlur={eventHandler} />
-        </form>
+        </FormSt>
       )}
 
       {type === 'address' && (
-        <form>
+        <FormSt>
           <label>{data.required ? data.label : `${data.label}(선택)`}</label>
           <input />
-        </form>
+        </FormSt>
       )}
       {type === 'select' && (
-        <form>
+        <FormSt>
           <label>{data.required ? data.label : `${data.label}(선택)`}</label>
           <Select id={data.id} showOption={showOption}>
             <div
@@ -113,7 +113,7 @@ export default function Form({ data }) {
               </OptionWrapper>
             )}
           </Select>
-        </form>
+        </FormSt>
       )}
 
       {type === 'file' && <AttachmentFile data={data} />}
@@ -137,52 +137,50 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 20px;
-  form {
+`;
+const FormSt = styled.form`
+  width: 100%;
+  label {
+    font-weight: 700;
+    font-size: 12px;
+  }
+  div.verification {
+    height: 12px;
+    font-size: 12px;
+    color: red;
+    margin-top: 8px;
+  }
+  div.addFileText {
+    font-size: 10px;
+    color: #adacad;
+    margin: 10px 0;
+  }
+
+  input {
     width: 100%;
-
-    label {
+    height: 48px;
+    outline: none;
+    background-color: #f8f9fb;
+    border-radius: 10px;
+    padding: 0 15px;
+    margin-top: 10px;
+    :hover {
+      border: 1px solid #ff705a;
+      cursor: text;
+    }
+    :focus {
+      border: 1px solid #ff705a;
+    }
+    ::placeholder {
+      color: #9da5ac;
       font-weight: 700;
-      font-size: 12px;
     }
-    div.verification {
-      height: 12px;
-      font-size: 12px;
-      color: red;
-      margin-top: 8px;
-    }
-    div.addFileText {
-      font-size: 10px;
-      color: #adacad;
-      margin: 10px 0;
-    }
-    input {
-      width: 100%;
-      height: 48px;
-      outline: none;
-      background-color: #f8f9fb;
-      border-radius: 10px;
-      padding: 0 15px;
-      margin-top: 10px;
-      :hover {
-        border: 1px solid #ff705a;
-        cursor: text;
-      }
-      :focus {
-        border: 1px solid #ff705a;
-      }
-      ::placeholder {
-        color: #9da5ac;
-        font-weight: 700;
-      }
-    }
-
-    input.file {
-      width: 90%;
-      /* height: 200px; */
-
-      :hover {
-        cursor: pointer;
-      }
+  }
+  input.file {
+    width: 90%;
+    /* height: 200px; */
+    :hover {
+      cursor: pointer;
     }
   }
 `;
