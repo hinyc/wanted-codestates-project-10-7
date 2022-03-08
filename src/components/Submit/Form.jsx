@@ -4,9 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
 import { addSubmitData, initSubmitData } from '../../modules/submit';
 import SearchAddress from '../Fields/SearchAddress';
-
 import Terms from './Terms';
-import SubmitButton from './SubmitButton';
 
 export default function Form({ data }) {
   const [showVerification, setShowVerification] = useState(false);
@@ -31,13 +29,11 @@ export default function Form({ data }) {
         if (e.type === 'focus') {
           if (!currentValue.length) setShowVerification(true);
         }
-        if (e.type === 'blur' && !showVerification) {
+        if (e.type === 'blur') {
           dispatch(addSubmitData(data.id, e.target.value));
         }
         break;
       case 'phone':
-        const num = e.target.value;
-        console.log(num);
         dispatch(addSubmitData(data.id, e.target.value));
         break;
       case 'select':
@@ -58,10 +54,13 @@ export default function Form({ data }) {
   //이벤트 블러 실행시 데이터 저장
   const backgroundHandler = () => setShowOption('');
   const searchHandler = () => setShowResearchModal(true);
-  const agreementStateHandler = () => setAgreementState(!agreementState);
+  const agreementStateHandler = (e, id, state) => {
+    e.stopPropagation();
+    setAgreementState(!agreementState);
+    dispatch(addSubmitData(id, state));
+  };
   const termsHandler = () => {
     setShowTerms(!showTerms);
-    console.log('click');
   };
 
   return (
@@ -142,9 +141,19 @@ export default function Form({ data }) {
       {type === 'agreement' && (
         <Agreement>
           <div className="miniWrap">
-            <div className="check" onClick={agreementStateHandler}>
+            <div
+              className="check"
+              onClick={(e) => {
+                agreementStateHandler(e, data.id, 'true');
+              }}
+            >
               {agreementState && (
-                <div className="symbol" onClick={agreementStateHandler}>
+                <div
+                  className="symbol"
+                  onClick={(e) => {
+                    agreementStateHandler(e, data.id, 'false');
+                  }}
+                >
                   ✔︎
                 </div>
               )}
