@@ -53,10 +53,13 @@ export default function Submit() {
 
   return (
     <Container>
-      {form.map((el) => {
-        return <Form key={el.id} data={el} />;
-      })}
-      {/* <SubmitButton /> */}
+
+      <Wrapper>
+        {form.map((el) => {
+          return <Form key={el.id} data={el} />;
+        })}
+      </Wrapper>
+      <SubmitButton />
     </Container>
   );
 }
@@ -67,4 +70,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+const Wrapper = styled.div`
+  padding-bottom: 120px;
 `;

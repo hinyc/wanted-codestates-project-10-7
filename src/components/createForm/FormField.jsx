@@ -20,51 +20,49 @@ const initialState = {
 };
 
 const FormField = ({ onSubmitHandler }) => {
-  const [formState, setFormState] = useState(initialState);
-
+  const [fieldState, setFieldState] = useState(initialState);
   const [selectedType, setSelectedType] = useState('text');
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const isRequiredRef = useRef();
+  const labelRef = useRef();
+  const placeholderRef = useRef();
 
   const onEditorStateChange = (editorState) => {
     setEditorState(editorState);
   };
-
   useEffect(() => {
-    const rawContentState = convertToRaw(editorState.getCurrentContent());
-    const markup = draftToHtml(rawContentState);
-
-    setFormState((prevState) => ({
-      ...prevState,
-      description: markup,
-    }));
-  }, [editorState]);
-
-  const onInputChangeHandler = (e) => {
-    // console.log(e.target);
-    setFormState((prevState) => ({
-      ...prevState,
-      required: isRequiredRef.current.checked,
-      [e.target.name]: e.target.value,
-    }));
-  };
-  useEffect(() => {
-    // console.log(formState);
-    onSubmitHandler(formState);
-  }, [formState]);
+    // console.log(fieldState);
+    onSubmitHandler(fieldState);
+  }, [fieldState]);
 
   const setSelectValue = ({ target: { value } }) => {
     setSelectedType(value);
   };
 
+  const submitForm = (e) => {
+    e.preventDefault();
+
+    // draft.js로 입력 받은 내용 html 형태로 변환헤서 저장
+    const rawContentState = convertToRaw(editorState.getCurrentContent());
+    const markup = draftToHtml(rawContentState);
+
+    // console.log(placeholderRef.current);  // null 출력됨
+
+    // 필드에 입력된 값들을 저장
+    setFieldState((prevState) => ({
+      ...prevState,
+      type: selectedType,
+      label: labelRef.current.value,
+      required: isRequiredRef.current.checked,
+      // placeholder: placeholderRef.current.value,
+      description: markup,
+    }));
+  };
+
   return (
     <Container>
       <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
-        <select
-          name="type"
-          onChange={setSelectValue}
-          // onChange={onInputChangeHandler}
-        >
+        <select name="type" onChange={setSelectValue}>
           <option value="text">텍스트</option>
           <option value="phone">전화번호</option>
           <option value="address">주소</option>
@@ -72,13 +70,7 @@ const FormField = ({ onSubmitHandler }) => {
           <option value="file">첨부파일</option>
           <option value="agreement">이용약관</option>
         </select>
-        <input
-          name="label"
-          type="text"
-          id="label"
-          value={formState.label}
-          onChange={onInputChangeHandler}
-        />
+        <input ref={labelRef} name="label" type="text" id="label" />
         <CheckBox>
           <input
             name="required"
@@ -99,7 +91,11 @@ const FormField = ({ onSubmitHandler }) => {
         {selectedType === 'select' ? (
           <DropDownOptionInput />
         ) : (
-          <input type="text" placeholder="플레이스홀더 예" />
+          <input
+            ref={placeholderRef}
+            type="text"
+            placeholder="플레이스홀더 예"
+          />
         )}
       </div>
       <EditorWrapper>
@@ -130,6 +126,7 @@ const FormField = ({ onSubmitHandler }) => {
           onEditorStateChange={onEditorStateChange}
         />
       </EditorWrapper>
+      <button onClick={submitForm}>필드 값 저장</button>
     </Container>
   );
 };

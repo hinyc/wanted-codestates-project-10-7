@@ -1,19 +1,29 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useRef } from 'react';
 import styled from 'styled-components';
 import FormField from '../components/createForm/FormField';
 import DragnDrop from '../components/createForm/DragnDrop';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function CreateForm() {
   const [fieldList, setFieldList] = useState([]);
+  const [formState, setFormState] = useState({ id: uuidv4() });
+
+  const formTitleRef = useRef();
 
   const onSubmitHandler = useCallback((fieldFormData) => {
     // 저장하기 버튼 클릭시 각 필드의 input 값들 전부 저장하기
-    setFieldList((prevList) => [...prevList, fieldFormData]);
+    // setFieldList((prevList) => [...prevList, fieldFormData]);
+    // console.log(fieldFormData);
+    setFormState({
+      id: uuidv4(),
+      title: formTitleRef.current.value,
+      fieldList: [fieldFormData],
+    });
   }, []);
 
   const saveForm = () => {
-    console.log(fieldList);
-    window.localStorage.setItem('fieldList', JSON.stringify(fieldList));
+    console.log(formState);
+    window.localStorage.setItem('fieldList', JSON.stringify(formState));
   };
 
   return (
@@ -21,7 +31,7 @@ export default function CreateForm() {
       <h1>폼 형식 생성</h1>
       <section style={{ display: 'flex', flexDirection: 'column' }}>
         <label htmlFor="formTitle">제목</label>
-        <input type="text" name="formTitle" id="formTitle" />
+        <input ref={formTitleRef} type="text" name="formTitle" id="formTitle" />
       </section>
       <section style={{ display: 'flex', flexDirection: 'column' }}>
         <label>필드목록</label>

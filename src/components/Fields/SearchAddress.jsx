@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import DaumPostcode from 'react-daum-postcode';
-import { useDispatch } from 'react-redux';
-import { addSubmitData } from '../../modules/submit';
 import DetailAddress from './DetailAddress';
 
 const SearchAddress = ({ props, setIsOpen, id }) => {
   const [userSelectAddress, setUserSelectAddress] = useState();
-  const dispatch = useDispatch();
 
   const handleComplete = (data) => {
     let fullAddress = data.address;
@@ -23,7 +20,6 @@ const SearchAddress = ({ props, setIsOpen, id }) => {
       }
       fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
-    dispatch(addSubmitData(id, fullAddress));
     setUserSelectAddress(fullAddress);
   };
 
@@ -54,6 +50,7 @@ const SearchAddress = ({ props, setIsOpen, id }) => {
             <DetailAddress
               userSelectAddress={userSelectAddress}
               setIsOpen={setIsOpen}
+              id={id}
             />
           ) : (
             <DaumPostcode

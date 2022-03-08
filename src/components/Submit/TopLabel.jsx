@@ -30,7 +30,7 @@ export default function TopLabel() {
   );
 }
 
-const Container = styled.button`
+const Container = styled.div`
   position: fixed;
   top: 0;
   left: 0px;
