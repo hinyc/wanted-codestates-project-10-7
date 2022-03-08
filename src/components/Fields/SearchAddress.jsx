@@ -99,7 +99,6 @@ const Container = styled.div`
   border-radius: 12px;
   box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
   animation: containerFade 0.35s ease;
-
   @keyframes containerFade {
     0% {
       top: 42.5%;
@@ -108,7 +107,6 @@ const Container = styled.div`
       top: 50%;
     }
   }
-
   .post_code {
     @media (max-width: 400px) {
       width: 100% !important;
@@ -126,7 +124,6 @@ const Title = styled.div`
   align-items: center;
   background-color: #00b9ff;
   border-radius: 12px 12px 0 0;
-
   @media (max-width: 400px) {
     height: 8vh;
     padding: 0 20px;
@@ -157,7 +154,6 @@ const Icon = styled.div`
   top: 0;
   right: 0;
   cursor: pointer;
-
   @media (max-width: 400px) {
     top: 7px;
     right: 15px;

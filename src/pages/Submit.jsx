@@ -2,9 +2,59 @@ import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import Form from '../components/Submit/Form';
 import SubmitButton from '../components/Submit/SubmitButton';
+import TopLabel from '../components/Submit/TopLabel';
 
 export default function Submit() {
   const form = [
+    {
+      id: 'name',
+      type: 'text',
+      required: true,
+      label: '이름',
+      placeholder: '주민등록상 이름 입력',
+    },
+    {
+      id: 'name',
+      type: 'text',
+      required: true,
+      label: '이름',
+      placeholder: '주민등록상 이름 입력',
+    },
+    {
+      id: 'name',
+      type: 'text',
+      required: true,
+      label: '이름',
+      placeholder: '주민등록상 이름 입력',
+    },
+    {
+      id: 'name',
+      type: 'text',
+      required: true,
+      label: '이름',
+      placeholder: '주민등록상 이름 입력',
+    },
+    {
+      id: 'name',
+      type: 'text',
+      required: true,
+      label: '이름',
+      placeholder: '주민등록상 이름 입력',
+    },
+    {
+      id: 'name',
+      type: 'text',
+      required: true,
+      label: '이름',
+      placeholder: '주민등록상 이름 입력',
+    },
+    {
+      id: 'name',
+      type: 'text',
+      required: true,
+      label: '이름',
+      placeholder: '주민등록상 이름 입력',
+    },
     {
       id: 'name',
       type: 'text',
@@ -49,6 +99,7 @@ export default function Submit() {
 
   return (
     <Container>
+      <TopLabel />
       {form.map((el) => {
         return <Form key={el.id} data={el} />;
       })}

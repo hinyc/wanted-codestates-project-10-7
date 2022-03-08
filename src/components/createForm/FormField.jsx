@@ -36,7 +36,6 @@ const FormField = ({ onSubmitHandler }) => {
     setSelectedType(value);
   };
 
-
   return (
     <Container>
       <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
@@ -61,7 +60,7 @@ const FormField = ({ onSubmitHandler }) => {
         </button>
       </div>
       <div className="placeholder-description">
-        {selectedType === 'dropdown' ? (
+        {selectedType === 'select' ? (
           <DropDownOptionInput />
         ) : (
           <input type="text" placeholder="플레이스홀더 예" />
@@ -94,7 +93,6 @@ const FormField = ({ onSubmitHandler }) => {
           editorState={editorState}
           onEditorStateChange={onEditorStateChange}
         />
-        ;
       </EditorWrapper>
     </Container>
   );

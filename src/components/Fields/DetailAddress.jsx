@@ -53,6 +53,11 @@ const DetailAddressBox = styled.div`
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
+
+  @media (max-width: 400px) {
+    height: 92vh;
+    padding: 30px;
+  }
 `;
 
 const Label = styled.div`
