@@ -1,23 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import FormField from '../components/createForm/FormField';
 import DragnDrop from '../components/createForm/DragnDrop';
 
 export default function CreateForm() {
-  const [fieldList, setFieldList] = useState({});
+  const [fieldList, setFieldList] = useState([]);
 
-  const onSubmitHandler = (fieldFormData) => {
+  const onSubmitHandler = useCallback((fieldFormData) => {
     // 저장하기 버튼 클릭시 각 필드의 input 값들 전부 저장하기
-    setFieldList((prevList) => ({
-      ...prevList,
-      fieldFormData,
-    }));
-  };
-  const onClickHandler = () => {};
+    setFieldList((prevList) => [...prevList, fieldFormData]);
+  }, []);
 
-  useEffect(() => {
+  const saveForm = () => {
     console.log(fieldList);
-  }, [fieldList]);
+    window.localStorage.setItem('fieldList', JSON.stringify(fieldList));
+  };
 
   return (
     <Wrapper>
@@ -28,9 +25,10 @@ export default function CreateForm() {
       </section>
       <section style={{ display: 'flex', flexDirection: 'column' }}>
         <label>필드목록</label>
-        <FormField onSubmitHandler />
+        <FormField onSubmitHandler={onSubmitHandler} />
       </section>
-      <button onClick={onSubmitHandler}>저장하기</button>
+      <button id="add-field-button">필드 추가하기</button>
+      <button onClick={saveForm}>저장하기</button>
       <DragnDrop />
     </Wrapper>
   );
@@ -63,5 +61,18 @@ const Wrapper = styled.div`
     height: 30px;
     border: 1px solid #f2f2f2;
     border-radius: 7px;
+  }
+
+  #add-field-button {
+    width: 100%;
+    height: 35px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 15px;
+    text-align: center;
+    background-color: #00b9ff;
+    color: #fff;
+    border-radius: 10px;
+    margin: 10px 0;
   }
 `;

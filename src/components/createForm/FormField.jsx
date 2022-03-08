@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as CloseIcon } from '../../assets/icon-close.svg';
 import { ReactComponent as UpDownArrow } from '../../assets/icon-up-down.svg';
@@ -9,15 +9,24 @@ import DropDownOptionInput from './DropDownOptionInput';
 import { EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 
+const initialState = {
+  type: 'text',
+  label: '',
+  required: false,
+  placeholder: '',
+  description: '',
+  options: [],
+  contents: '',
+};
+
 const FormField = ({ onSubmitHandler }) => {
-  // const [formState, setFormState] = useState();
+  const [formState, setFormState] = useState(initialState);
 
   const [selectedType, setSelectedType] = useState('text');
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  const [descriptionInput, setDescriptionInput] = useState('');
+  const isRequiredRef = useRef();
 
   const onEditorStateChange = (editorState) => {
-    // console.log(convertToRaw(editorState.getCurrentContent()).blocks[0]);
     setEditorState(editorState);
   };
 
@@ -25,22 +34,37 @@ const FormField = ({ onSubmitHandler }) => {
     const rawContentState = convertToRaw(editorState.getCurrentContent());
     const markup = draftToHtml(rawContentState);
 
-    // setTimeout(() => {
-    //   console.log(markup);
-    // }, 2000);
-    setDescriptionInput(markup);
-    // console.log(markup);
+    setFormState((prevState) => ({
+      ...prevState,
+      description: markup,
+    }));
   }, [editorState]);
+
+  const onInputChangeHandler = (e) => {
+    // console.log(e.target);
+    setFormState((prevState) => ({
+      ...prevState,
+      required: isRequiredRef.current.checked,
+      [e.target.name]: e.target.value,
+    }));
+  };
+  useEffect(() => {
+    // console.log(formState);
+    onSubmitHandler(formState);
+  }, [formState]);
 
   const setSelectValue = ({ target: { value } }) => {
     setSelectedType(value);
   };
 
-
   return (
     <Container>
       <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
-        <select onChange={setSelectValue}>
+        <select
+          name="type"
+          // onChange={setSelectValue}
+          onChange={onInputChangeHandler}
+        >
           <option value="text">텍스트</option>
           <option value="phone">전화번호</option>
           <option value="address">주소</option>
@@ -48,10 +72,21 @@ const FormField = ({ onSubmitHandler }) => {
           <option value="file">첨부파일</option>
           <option value="agreement">이용약관</option>
         </select>
-        <input type="text" id="labelName" />
+        <input
+          name="label"
+          type="text"
+          id="label"
+          value={formState.label}
+          onChange={onInputChangeHandler}
+        />
         <CheckBox>
-          <input type="checkbox" id="isRequired" />
-          <label htmlFor="isRequired">필수</label>
+          <input
+            name="required"
+            type="checkbox"
+            id="required"
+            ref={isRequiredRef}
+          />
+          <label htmlFor="required">필수</label>
         </CheckBox>
         <button className="drag-button">
           <UpDownArrow />
@@ -174,7 +209,7 @@ const CheckBox = styled.div`
   display: flex;
   align-items: center;
 
-  #isRequired {
+  #required {
     border: none;
     margin: 0 5px;
   }
