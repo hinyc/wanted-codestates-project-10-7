@@ -5,6 +5,7 @@ import styled, { css } from 'styled-components';
 import { addSubmitData, initSubmitData } from '../../modules/submit';
 import SearchAddress from '../Fields/SearchAddress';
 import Terms from './Terms';
+import SubmitButton from './SubmitButton';
 
 export default function Form({ data }) {
   const [showVerification, setShowVerification] = useState(false);
@@ -18,7 +19,6 @@ export default function Form({ data }) {
   const id = data.id;
   const type = data.type;
   const submitData = useSelector((state) => state.submit);
-  console.log(submitData);
   const eventHandler = (e) => {
     const currentValue = value.current.value;
     switch (data.type) {
@@ -128,7 +128,15 @@ export default function Form({ data }) {
         </FormSt>
       )}
 
-      {type === 'file' && <AttachmentFile data={data} />}
+      {type === 'file' && (
+        <InputFile>
+          <AttachmentFile data={data} />
+          <div
+            className=" description"
+            dangerouslySetInnerHTML={{ __html: data.description }}
+          ></div>
+        </InputFile>
+      )}
 
       {type === 'agreement' && (
         <Agreement>
@@ -222,6 +230,12 @@ const FormSt = styled.div`
   }
 `;
 
+const InputFile = styled.div`
+  .description {
+    margin-top: 15px;
+  }
+`;
+
 const Select = styled.div`
   margin-top: 10px;
   height: 48px;
@@ -293,8 +307,10 @@ const Agreement = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  height: 32px;
   font-size: 16px;
   font-weight: 700;
+  margin-top: 24px;
   .miniWrap {
     display: flex;
     align-items: center;
@@ -329,7 +345,7 @@ const Agreement = styled.div`
   }
   div.arrow {
     color: #8d959d;
-    font-size: 20px;
+    font-size: 16px;
     :hover {
       cursor: pointer;
     }

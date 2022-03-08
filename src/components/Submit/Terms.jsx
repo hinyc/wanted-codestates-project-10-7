@@ -13,7 +13,7 @@ export default function Terms({ data, termsHandler }) {
           {data.label}
           <div className="arrow"></div>
         </Top>
-        <Content>{data.contents}</Content>
+        <Content dangerouslySetInnerHTML={{ __html: data.contents }}></Content>
       </Wrapper>
     </Container>
   );

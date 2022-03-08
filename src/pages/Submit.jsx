@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import Form from '../components/Submit/Form';
+import SubmitButton from '../components/Submit/SubmitButton';
 
 export default function Submit() {
   const form = [
@@ -51,6 +52,7 @@ export default function Submit() {
       {form.map((el) => {
         return <Form key={el.id} data={el} />;
       })}
+      <SubmitButton />
     </Container>
   );
 }
