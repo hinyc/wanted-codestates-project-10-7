@@ -6,16 +6,17 @@ import CreateForm from './pages/CreateForm';
 import styled from 'styled-components';
 import Submit from './pages/Submit';
 import UserSubmissionList from './pages/UserSubmissionLists';
+import DragnDrop from './components/createForm/DragnDrop';
 
 function App() {
   return (
     <Router>
       <GlobalStyles />
-
       <AllWrapper>
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/submit" element={<Submit />} />
+          <Route path="/dragdrop" element={<DragnDrop />} />
           <Route path="/create-form" element={<CreateForm />} />
           <Route path="/submission" element={<UserSubmissionList />} />
         </Routes>
@@ -30,8 +31,8 @@ const AllWrapper = styled.div`
   width: 500px;
   height: auto;
   min-height: 100vh;
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
 `;
