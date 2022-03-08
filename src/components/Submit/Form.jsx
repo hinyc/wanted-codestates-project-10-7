@@ -3,7 +3,7 @@ import AttachmentFile from '../Fields/attachmentFile';
 import { useDispatch, useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
 import { addSubmitData, initSubmitData } from '../../modules/submit';
-import SearchAddress from '../Field/SearchAddress';
+import SearchAddress from '../Fields/SearchAddress';
 
 export default function Form({ data }) {
   const [showVerification, setShowVerification] = useState(false);
