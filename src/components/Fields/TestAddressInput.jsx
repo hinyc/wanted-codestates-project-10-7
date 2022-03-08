@@ -17,7 +17,7 @@ const TestAddressInput = () => {
           {useSelector((state) => state.submit.address)}
         </FullAddressBox>
       </AddressInputBox>
-      {isOpen ? <SearchAddress setIsOpen={setIsOpen} /> : null}
+      {isOpen ? <SearchAddress setIsOpen={setIsOpen} ca /> : null}
     </React.Fragment>
   );
 };

@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import DaumPostcode from 'react-daum-postcode';
 import { useDispatch } from 'react-redux';
 import { addSubmitData } from '../../modules/submit';
-import DetailAddress from './DetailAddress';
 
 const SearchAddress = ({ props, setIsOpen, id }) => {
-  const [userSelectAddress, setUserSelectAddress] = useState();
   const dispatch = useDispatch();
   const handleComplete = (data) => {
     let fullAddress = data.address;
@@ -22,11 +20,10 @@ const SearchAddress = ({ props, setIsOpen, id }) => {
       }
       fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
+
     dispatch(addSubmitData(id, fullAddress));
-    setUserSelectAddress(fullAddress);
     console.log(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
   };
-  console.log(userSelectAddress);
 
   const postCodeStyle = {
     width: '100%',
@@ -51,19 +48,12 @@ const SearchAddress = ({ props, setIsOpen, id }) => {
             <Text>배송 주소 검색</Text>
             <Icon onClick={isClose}>&times;</Icon>
           </Title>
-          {userSelectAddress ? (
-            <DetailAddress
-              userSelectAddress={userSelectAddress}
-              setIsOpen={setIsOpen}
-            />
-          ) : (
-            <DaumPostcode
-              className="post_code"
-              style={postCodeStyle}
-              onComplete={handleComplete}
-              {...props}
-            />
-          )}
+          <DaumPostcode
+            className="post_code"
+            style={postCodeStyle}
+            onComplete={handleComplete}
+            {...props}
+          />
         </Container>
       </SearchAddressBox>
     </>
