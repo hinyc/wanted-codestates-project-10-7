@@ -4,11 +4,15 @@ import { ReactComponent as CloseIcon } from '../../assets/icon-close.svg';
 import { ReactComponent as UpDownArrow } from '../../assets/icon-up-down.svg';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import DropDownOptionInput from './DropDownOptionInput';
+
 import { EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 
 const FormField = ({ onSubmitHandler }) => {
   // const [formState, setFormState] = useState();
+
+  const [selectedType, setSelectedType] = useState('text');
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [descriptionInput, setDescriptionInput] = useState('');
 
@@ -28,10 +32,15 @@ const FormField = ({ onSubmitHandler }) => {
     // console.log(markup);
   }, [editorState]);
 
+  const setSelectValue = ({ target: { value } }) => {
+    setSelectedType(value);
+  };
+
+
   return (
     <Container>
       <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
-        <select>
+        <select onChange={setSelectValue}>
           <option value="text">텍스트</option>
           <option value="phone">전화번호</option>
           <option value="address">주소</option>
@@ -52,7 +61,11 @@ const FormField = ({ onSubmitHandler }) => {
         </button>
       </div>
       <div className="placeholder-description">
-        <input type="text" placeholder="플레이스홀더 예" />
+        {selectedType === 'dropdown' ? (
+          <DropDownOptionInput />
+        ) : (
+          <input type="text" placeholder="플레이스홀더 예" />
+        )}
       </div>
       <EditorWrapper>
         <Editor

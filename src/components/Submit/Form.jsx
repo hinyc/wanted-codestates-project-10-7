@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
 import { addSubmitData, initSubmitData } from '../../modules/submit';
 
-
 export default function Form({ data }) {
   const [showVerification, setShowVerification] = useState(false);
   const [showOption, setShowOption] = useState('');
@@ -63,7 +62,7 @@ export default function Form({ data }) {
   return (
     <Container>
       {type === 'text' && (
-        <form>
+        <FormSt>
           <label>{data.required ? data.label : `${data.label}(선택)`}</label>
           <input
             ref={value}
@@ -77,24 +76,24 @@ export default function Form({ data }) {
               {showVerification && '이름 항목은 필수 정보입니다.'}
             </div>
           ) : null}
-        </form>
+        </FormSt>
       )}
 
       {type === 'phone' && (
-        <form>
+        <FormSt>
           <label>{data.required ? data.label : `${data.label}(선택)`}</label>
           <input onBlur={eventHandler} />
-        </form>
+        </FormSt>
       )}
 
       {type === 'address' && (
-        <form>
+        <FormSt>
           <label>{data.required ? data.label : `${data.label}(선택)`}</label>
           <input />
-        </form>
+        </FormSt>
       )}
       {type === 'select' && (
-        <form>
+        <FormSt>
           <label>{data.required ? data.label : `${data.label}(선택)`}</label>
           <Select id={data.id} showOption={showOption}>
             <div
@@ -114,11 +113,10 @@ export default function Form({ data }) {
               </OptionWrapper>
             )}
           </Select>
-        </form>
+        </FormSt>
       )}
 
       {type === 'file' && <AttachmentFile data={data} />}
-
 
       {type === 'agreement' && (
         <Agreement>
@@ -139,13 +137,13 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 20px;
-  form {
-    width: 100%;
-  }
+`;
+const FormSt = styled.form`
+  width: 100%;
   label {
     font-weight: 700;
     font-size: 12px;
-
+  }
   div.verification {
     height: 12px;
     font-size: 12px;
@@ -157,9 +155,10 @@ const Container = styled.div`
     color: #adacad;
     margin: 10px 0;
   }
-  .input {
+
+  input {
     width: 100%;
-    height: 400px;
+    height: 48px;
     outline: none;
     background-color: #f8f9fb;
     border-radius: 10px;
@@ -177,17 +176,14 @@ const Container = styled.div`
       font-weight: 700;
     }
   }
-
   input.file {
     width: 90%;
     /* height: 200px; */
-
     :hover {
       cursor: pointer;
     }
   }
 `;
-
 
 const Select = styled.div`
   margin-top: 10px;
