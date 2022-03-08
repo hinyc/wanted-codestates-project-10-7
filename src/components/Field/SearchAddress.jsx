@@ -1,8 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import DaumPostcode from 'react-daum-postcode';
+import { useDispatch } from 'react-redux';
+import { addSubmitData } from '../../modules/submit';
 
-const SearchAddress = ({ props, setIsOpen }) => {
+const SearchAddress = ({ props, setIsOpen, id }) => {
+  const dispatch = useDispatch();
   const handleComplete = (data) => {
     let fullAddress = data.address;
     let extraAddress = '';
@@ -17,7 +20,7 @@ const SearchAddress = ({ props, setIsOpen }) => {
       }
       fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
-
+    dispatch(addSubmitData(id, fullAddress));
     console.log(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
   };
 
@@ -64,7 +67,8 @@ const SearchAddressBox = styled.div`
   top: 0;
   left: 0;
   animation: boxFade 0.35s ease;
-
+  /* 여기 */
+  z-index: 1;
   @keyframes boxFade {
     0% {
       opacity: 0;

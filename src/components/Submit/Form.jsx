@@ -3,10 +3,12 @@ import AttachmentFile from '../Fields/attachmentFile';
 import { useDispatch, useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
 import { addSubmitData, initSubmitData } from '../../modules/submit';
+import SearchAddress from '../Field/SearchAddress';
 
 export default function Form({ data }) {
   const [showVerification, setShowVerification] = useState(false);
   const [showOption, setShowOption] = useState('');
+  const [showResearchModal, setShowResearchModal] = useState(false);
   const [agreementState, setAgreementState] = useState(false);
   const dispatch = useDispatch();
 
@@ -45,7 +47,7 @@ export default function Form({ data }) {
         break;
     }
   };
-
+  console.log(submitData);
   const optionSelectHandler = (id) => {
     console.log('click');
     console.log(id, showOption);
@@ -59,10 +61,15 @@ export default function Form({ data }) {
     setShowOption('');
   };
 
+  const searchHandler = () => {
+    console.log('click');
+    setShowResearchModal(true);
+  };
+
   return (
     <Container>
       {type === 'text' && (
-        <form>
+        <FormSt>
           <label>{data.required ? data.label : `${data.label}(선택)`}</label>
           <input
             ref={value}
@@ -76,28 +83,36 @@ export default function Form({ data }) {
               {showVerification && '이름 항목은 필수 정보입니다.'}
             </div>
           ) : null}
-        </form>
+        </FormSt>
       )}
 
       {type === 'phone' && (
-        <form>
+        <FormSt>
           <label>{data.required ? data.label : `${data.label}(선택)`}</label>
           <input onBlur={eventHandler} />
-        </form>
+        </FormSt>
       )}
 
       {type === 'address' && (
-        <form>
+        <FormSt>
           <label>{data.required ? data.label : `${data.label}(선택)`}</label>
-          <input />
-        </form>
+          <div className="address-search" onClick={searchHandler}>
+            {submitData[data.id]}
+          </div>
+          {showResearchModal && (
+            <SearchAddress
+              setIsOpen={() => setShowResearchModal(false)}
+              id={data.id}
+            />
+          )}
+        </FormSt>
       )}
       {type === 'select' && (
-        <form>
+        <FormSt>
           <label>{data.required ? data.label : `${data.label}(선택)`}</label>
           <Select id={data.id} showOption={showOption}>
             <div
-              className="currentSelector"
+              className="current-selector"
               onClick={() => optionSelectHandler(data.id)}
             >
               {submitData[data.id] || data.options[0]}
@@ -113,7 +128,7 @@ export default function Form({ data }) {
               </OptionWrapper>
             )}
           </Select>
-        </form>
+        </FormSt>
       )}
 
       {type === 'file' && <AttachmentFile data={data} />}
@@ -121,7 +136,9 @@ export default function Form({ data }) {
       {type === 'agreement' && (
         <Agreement>
           <div className="miniWrap">
-            <div className="check"></div>
+            <div className="check">
+              <div className="symbol">✔︎</div>
+            </div>
             <div className="text">{`${data.label} (필수)`}</div>
           </div>
           <div className="arrow">&gt;</div>
@@ -137,52 +154,62 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 20px;
-  form {
+`;
+const FormSt = styled.div`
+  width: 100%;
+
+  label {
+    font-weight: 700;
+    font-size: 12px;
+  }
+  div.verification {
+    height: 12px;
+    font-size: 12px;
+    color: #ff5a5f;
+    margin-top: 8px;
+  }
+  div.addFileText {
+    font-size: 10px;
+    color: #adacad;
+    margin: 10px 0;
+  }
+  div.address-search {
     width: 100%;
+    height: 48px;
+    background-color: #f5f8fa;
+    :hover {
+      border: 1px solid #00b9ff;
+      cursor: text;
+    }
+  }
 
-    label {
+  input {
+    width: 100%;
+    height: 48px;
+    outline: none;
+    background-color: #f5f8fa;
+    border-radius: 10px;
+    padding: 0 15px;
+    margin-top: 10px;
+    :hover {
+      border: 1px solid #00b9ff;
+      cursor: text;
+    }
+    :focus {
+      border: 1px solid #00b9ff;
+    }
+    ::placeholder {
+      color: #9da5ac;
       font-weight: 700;
-      font-size: 12px;
     }
-    div.verification {
-      height: 12px;
-      font-size: 12px;
-      color: red;
-      margin-top: 8px;
-    }
-    div.addFileText {
-      font-size: 10px;
-      color: #adacad;
-      margin: 10px 0;
-    }
-    input {
-      width: 100%;
-      height: 48px;
-      outline: none;
-      background-color: #f8f9fb;
-      border-radius: 10px;
-      padding: 0 15px;
-      margin-top: 10px;
-      :hover {
-        border: 1px solid #ff705a;
-        cursor: text;
-      }
-      :focus {
-        border: 1px solid #ff705a;
-      }
-      ::placeholder {
-        color: #9da5ac;
-        font-weight: 700;
-      }
-    }
+  }
 
-    input.file {
-      width: 90%;
-      /* height: 200px; */
+  input.file {
+    width: 90%;
+    /* height: 200px; */
 
-      :hover {
-        cursor: pointer;
-      }
+    :hover {
+      cursor: pointer;
     }
   }
 `;
@@ -191,21 +218,30 @@ const Select = styled.div`
   margin-top: 10px;
   height: 48px;
   outline: none;
-  background-color: #f8f9fb;
+  background-color: #f5f8fa;
   border-radius: 10px;
   padding: 0 15px;
   position: relative;
-  div.currentSelector {
+
+  div.current-selector {
     height: 100%;
     line-height: 48px;
     font-size: 18px;
     font-weight: 700;
   }
+  :hover {
+    border: 1px solid #00b9ff;
+    cursor: text;
+  }
+
   ${({ id, showOption }) => {
     if (id === showOption) {
       return css`
         border-radius: 10px 10px 0 0;
         border: 1px solid #666;
+        :hover {
+          border: 1px solid #666;
+        }
       `;
     }
   }}
@@ -219,6 +255,8 @@ const OptionWrapper = styled.div`
   top: 46px;
   left: -1px;
   background-color: #f7fafb;
+  z-index: 99;
+
   option {
     height: 48px;
     line-height: 48px;
@@ -259,6 +297,16 @@ const Agreement = styled.div`
     border: 1px solid #d6d9dc;
     border-radius: 50%;
     margin-right: 10px;
+    overflow: hidden;
+    .symbol {
+      background-color: #ff5a5f;
+      color: #fff;
+      font-size: 12px;
+      width: 20px;
+      height: 20px;
+      text-align: center;
+      line-height: 20px;
+    }
   }
   div.arrow {
     color: #8d959d;

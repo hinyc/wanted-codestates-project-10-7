@@ -14,7 +14,7 @@ const TestAddressInput = () => {
         <Label>주소</Label>
         <ClickBox onClick={openHandler} />
       </AddressInputBox>
-      {isOpen ? <SearchAddress setIsOpen={setIsOpen} /> : null}
+      {isOpen ? <SearchAddress setIsOpen={setIsOpen} ca /> : null}
     </React.Fragment>
   );
 };
