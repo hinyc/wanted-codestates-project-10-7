@@ -40,7 +40,7 @@ export default function DropDownOptionInput() {
     },
   };
   const setOnValue = (e) => {
-    const value = e.target.value;
+    const value = e.target.value.trim();
     const res = reg.convert(value);
     if (!res) setValue(e.target.value);
     else {
