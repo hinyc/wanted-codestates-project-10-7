@@ -21,7 +21,6 @@ const initialState = {
 
 const FormField = ({ onSubmitHandler }) => {
   const [fieldState, setFieldState] = useState(initialState);
-
   const [selectedType, setSelectedType] = useState('text');
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const isRequiredRef = useRef();
