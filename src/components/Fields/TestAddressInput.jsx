@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 import SearchAddress from './SearchAddress';
 
 const TestAddressInput = () => {
@@ -12,7 +13,9 @@ const TestAddressInput = () => {
     <React.Fragment>
       <AddressInputBox>
         <Label>주소</Label>
-        <ClickBox onClick={openHandler} />
+        <FullAddressBox onClick={openHandler}>
+          {useSelector((state) => state.submit.address)}
+        </FullAddressBox>
       </AddressInputBox>
       {isOpen ? <SearchAddress setIsOpen={setIsOpen} /> : null}
     </React.Fragment>
@@ -36,12 +39,16 @@ const Label = styled.div`
   font-weight: bold;
 `;
 
-const ClickBox = styled.div`
+const FullAddressBox = styled.div`
   width: 100%;
   height: 50px;
+  line-height: 50px;
+  padding: 0 20px;
   background: #f5f8fa;
   border-radius: 8px;
   margin-top: 10px;
+  font-weight: bold;
+  color: #aab8c2;
   cursor: pointer;
 `;
 
