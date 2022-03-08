@@ -1,100 +1,85 @@
+<br />
 
-## 모듈
-- React `$ npx creat-react-app template`
-- React-router-dom `$ npm i react-router-dom`
-- styled-component `$ npm install --save styled-component`
-- styled-reset `$ npm i styled-reset`
-: reset css 설정
-- redux `$npm i redux`
-- react-redux `$ npm install react-redux`
-: react와 redux를 연결시켜준다. provider 사용
-- redux-devtools-extension `$ npm i redux-devtools-extension` 
-: 크롬개발자도구로 리덕스 상태관리 기록을 확인 할수 있게 해준다.
-<div align="center"><img width="400px" src="https://images.velog.io/images/hinyc/post/5a50d7fa-aa89-4701-924d-ae57f63793b3/image.png"/></div>
-  
-<div align="center"><img width="250px" src="https://images.velog.io/images/hinyc/post/f353854e-4903-4827-ba20-5cb7c61007cb/image.png"/></div>
-  
+## 🌈 &nbsp; wanted-codestates-project-10-7 
 
-## 설정 추가
-### reset css 설정
-#### `GlobalStyles.js` component 생성
-```jsx
-import { createGlobalStyle } from 'styled-components';
-import reset from 'styled-reset';
-const GlobalStyles = createGlobalStyle` 
-  ${reset}
-    a{
-        text-decoration: none;
-        color: inherit;
-    }
-    *{
-        box-sizing: border-box;
-    }
-    ::-webkit-scrollbar {
-      display: none;
-    }
-    input, textarea { 
-      -moz-user-select: auto;
-      -webkit-user-select: auto;
-      -ms-user-select: auto;
-      user-select: auto;
-    }
-    input {
-      border: none;
-    }
-    button {
-      border: none;
-      background: none;
-      padding: 0;
-      cursor: pointer;
-    }
-`;
+### 📎 &nbsp; [과제링크]()
 
-export default GlobalStyles;
+<div align="center">
+<img width="300px" src=""/>
+</div>
 
-```
+<br />
 
-**App component에 GlobalStyles Comoponet 추가**
-<div align="center"><img width="600px" src="https://images.velog.io/images/hinyc/post/decfa986-f57c-4496-b4ea-7ad967ed7b33/image.png"/></div>
+### 😎 &nbsp; 문제 설명
+
+- 작성 예정
 
 
-### prettirerc 설정
+<br />
 
-<img width="150px" src="https://images.velog.io/images/hinyc/post/44f7e756-d3f1-472a-b1df-fbf9d26d5fc9/image.png"/>
+### 👨🏻‍💻 &nbsp; 프로젝트 사용 방법 
 
-```js
-{
-  "singleQuote": true,
-  "semi": true,
-  "useTabs": false,
-  "tabWidth": 2,
-  "trailingComma": "all",
-  "printWidth": 200
-}
-```
+1. 작성 예정
 
-## redux store 생성
-```jsx
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { createStore } from 'redux';
-import rootReducer from './modules';
-import { Provider } from 'react-redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-//!Provider를 이용해 <App/> 을 감싸면 모든 컴포넌트에서 store에 접근 가능
+<br />
 
-const store = createStore(rootReducer, composeWithDevTools());
-ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById('root'),
-);
+### 👨‍👨‍👧‍👧 &nbsp; 팀 구성
 
-reportWebVitals();
-```
+|     이름     | 직책 |                                                                  GitHub                                                                   |
+| :----------: | :----: | :-------------------------------------------------------------------------------------------------------------------------------------: |
+| 🏄🏻‍♂️ &nbsp; FE_홍인열 | 🎖 팀장  |  [![github](https://img.shields.io/badge/홍인열-181717?style=flat-square&logo=GitHub&logoColor=white)](https://github.com/hinyc)    |
+| 🐸 &nbsp; FE_김주영 | • 팀원  | [![github](https://img.shields.io/badge/김주영-181717?style=flat-square&logo=GitHub&logoColor=white)](https://github.com/juo1221) |
+| 🐮 &nbsp; FE_복지호 | • 팀원  |   [![github](https://img.shields.io/badge/복지호-181717?style=flat-square&logo=GitHub&logoColor=white)](https://github.com/Jiho31)    |
+| 🍔 &nbsp; FE_우혁주 | • 팀원  | [![github](https://img.shields.io/badge/우혁주-181717?style=flat-square&logo=GitHub&logoColor=white)](https://github.com/Space-Belt) |
+| 🍕 &nbsp; FE_전용태 | • 팀원  |    [![github](https://img.shields.io/badge/전용태-181717?style=flat-square&logo=GitHub&logoColor=white)](https://github.com/yong313)     |
+
+<br />
+
+### ️⚙️ &nbsp; 기술 스텍 
+
+<img src="https://img.shields.io/badge/Reat-333333?style=flat-round&logo=React&logoColor=ffffff"/></a> &nbsp;
+<img src="https://img.shields.io/badge/JavaScript-333333?style=flat-round&logo=JavaScript&logoColor=ffffff"/></a>&nbsp;
+<img src="https://img.shields.io/badge/HTML5-333333?style=flat-round&logo=HTML5&logoColor=ffffff"/></a>&nbsp;
+<img src="https://img.shields.io/badge/CSS3-333333?style=flat-round&logo=CSS3&logoColor=ffffff"/></a> &nbsp;<br />
+<img src="https://img.shields.io/badge/Redux-333333?style=flat-round&logo=Redux&logoColor=ffffff"/></a> &nbsp;
+<img src="https://img.shields.io/badge/Axios-333333?style=flat-round&logo=PlayStation&logoColor=ffffff"/></a> &nbsp;
+<img src="https://img.shields.io/badge/Figma-333333?style=flat-round&logo=Figma&logoColor=ffffff"/></a> &nbsp;
+<img src="https://img.shields.io/badge/Discord-333333?style=flat-round&logo=Discord&logoColor=ffffff"/></a> &nbsp;
+
+<br />
+
+### 🛠 &nbsp; 구현 기능 목록
+
+<details>
+  <summary>홍인열</summary>
+  <ul>
+   <li> </li>
+  </ul>
+</details>
+<details>
+  <summary>김주영</summary>
+  <ul>
+    <li></li>
+  </ul>
+</details>
+<details>
+  <summary>복지호</summary>
+  <ul>
+   <li></li>
+  </ul>
+</details>
+<details>
+  <summary>우혁주</summary>
+    <ul>
+      <li> </li>
+    </ul>
+</details>
+<details>
+  <summary>전용태</summary>
+  <ul>
+    <li>  </li>
+  </ul>
+</details>
+
+
+<br />
