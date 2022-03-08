@@ -1,9 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
+import ProgressBar from '../common/ProgressBar';
+import { render } from '@testing-library/react';
 
 export default function AttachmentFile({ data }) {
   const [file, setFile] = useState(null);
+  const [percent, setPercent] = useState(0);
   const [previewImg, setPreviewImg] = useState(null);
+
   const setOnChange = async (e) => {
     const file = e.target.files[0];
     setFile(file);
@@ -12,9 +16,17 @@ export default function AttachmentFile({ data }) {
         try {
           const fileReader = new FileReader();
           fileReader.readAsDataURL(file);
-          fileReader.onload = (e) => {
+          fileReader.addEventListener('load', (e) => {
             res({ imgUrl: e.target.result, fileName: file.name });
-          };
+          });
+          fileReader.addEventListener('progress', (event) => {
+            console.log(event);
+            if (event.loaded && event.total) {
+              console.log(event.loaded);
+              const percent = (event.loaded / event.total) * 100;
+              setPercent(Math.round(percent));
+            }
+          });
         } catch (err) {
           rej(err);
         }
@@ -22,10 +34,7 @@ export default function AttachmentFile({ data }) {
     })();
     setPreviewImg(img);
   };
-  useEffect(() => {
-    if (!previewImg) return;
-    console.log(previewImg);
-  }, [previewImg]);
+
   const fileName = previewImg ? '눌러서 파일 변경' : '눌러서 파일 등록';
   return (
     <>
@@ -41,6 +50,7 @@ export default function AttachmentFile({ data }) {
             </>
           )}
         </FileDropper>
+        <ProgressBar percent={percent} />
       </form>
     </>
   );
@@ -65,8 +75,8 @@ const FileInput = styled.input.attrs({ type: 'file', accept: 'image/*' })`
   position: absolute;
   opacity: 0;
   width: 100%;
-  height: 100% !important;
-  cursor: pointer !important;
+  height: 100%;
+  cursor: pointer;
   z-index: 9;
 `;
 const P = styled.p`

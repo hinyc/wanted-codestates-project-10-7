@@ -91,9 +91,6 @@ const Container = styled.div`
     font-size: 12px;
     width: 100%;
   }
-  div {
-    width: 100%;
-  }
   div.verification {
     height: 12px;
     font-size: 12px;
@@ -105,9 +102,9 @@ const Container = styled.div`
     color: #adacad;
     margin: 10px 0;
   }
-  input {
+  .input {
     width: 100%;
-    height: 48px;
+    height: 400px;
     outline: none;
     background-color: #f8f9fb;
     border-radius: 10px;
@@ -127,13 +124,12 @@ const Container = styled.div`
   }
   input.file {
     width: 90%;
-    height: 200px;
+    /* height: 200px; */
     :hover {
       cursor: pointer;
     }
   }
 `;
-
 const Select = styled.div``;
 const Agreement = styled.div`
   font-size: 16px;
