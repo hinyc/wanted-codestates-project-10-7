@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 function DragnDrop() {
@@ -11,70 +11,78 @@ function DragnDrop() {
     { title: 'KaKao' },
     { title: 'LinkedIn' },
   ];
-  const [lists, setLists] = useState(socialNetworks);
-  const [grab, setGrab] = useState(null);
-  const onDragOver = (e) => {
-    e.preventDefault();
-  };
-
+  const [snsList, setSnsList] = useState(socialNetworks);
+  const [grab, setGrab] = useState();
   const onDragStart = (e) => {
-    setGrab(e.target);
-
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/html', e.target);
+    setGrab(e.target.innerText);
   };
-
+  const onDragOver = (e, title) => {
+    e.preventDefault();
+    if (title === grab) return;
+    // console.log(e.target);
+  };
   const onDragEnd = (e) => {
-    e.dataTransfer.dropEffect = 'move';
+    // e.preventDefault();
+    // console.log('pageY', e.pageY);
   };
-
   const onDrop = (e) => {
-    let grabPosition = Number(grab.dataset.position);
-    let targetPosition = Number(e.target.dataset.position);
-
-    let list = [...lists];
-    list[grabPosition] = list.splice(targetPosition, 1, list[grabPosition])[0];
-
-    setLists(list);
+    e.preventDefault();
+    const target = e.target.innerText;
+    const endPoint = e.target.offsetTop + e.target.offsetHeight / 2;
+    let targetIndex;
+    const filteredSns = snsList.filter((sns) => sns.title !== grab);
+    snsList.forEach((sns, i) => {
+      if (sns.title === target) {
+        targetIndex = i;
+      }
+    });
+    if (e.pageY < endPoint) {
+      filteredSns.splice(targetIndex, 0, { title: grab });
+      setSnsList(filteredSns);
+      return;
+    }
+    if (targetIndex !== snsList.length - 2) {
+      filteredSns.splice(targetIndex + 1, 0, { title: grab });
+      setSnsList(filteredSns);
+      return;
+    }
   };
+
   return (
     <Container>
       <ul className="List">
-        {lists.map((sns, index) => (
-          <li
+        {snsList.map((sns, index) => (
+          <List
             draggable
             key={index}
-            data-position={index}
-            onDragOver={onDragOver}
+            onDragOver={(e) => onDragOver(e, sns.title)}
             onDragStart={onDragStart}
             onDragEnd={onDragEnd}
             onDrop={onDrop}
           >
             {sns.title}
-          </li>
+          </List>
         ))}
       </ul>
     </Container>
   );
 }
-// const FormList = styled.div`
-//   width: 400px;
-//   height: 40px;
-//   border: 1px solid black;
-//   & button {
-//     width: 400px;
-//     height: 40px;
-//   }
-// `;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  ul {
+    display: flex;
+    flex-direction: column;
+    transition: all 0.2s ease-in-out;
+  }
 `;
 
-// const buttonList = styled.div`
-//   width: 400px;
-//   height: 30px;
-//   border: 1px solid black;
-// `;
+const List = styled.li`
+  width: 100px;
+  height: 50px;
+  border: 1px solid red;
+  cursor: grab;
+`;
 
 export default DragnDrop;
