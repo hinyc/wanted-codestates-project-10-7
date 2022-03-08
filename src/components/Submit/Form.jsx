@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
 import { addSubmitData, initSubmitData } from '../../modules/submit';
 
-
 export default function Form({ data }) {
   const [showVerification, setShowVerification] = useState(false);
   const [showOption, setShowOption] = useState('');
@@ -119,7 +118,6 @@ export default function Form({ data }) {
 
       {type === 'file' && <AttachmentFile data={data} />}
 
-
       {type === 'agreement' && (
         <Agreement>
           <div className="miniWrap">
@@ -141,53 +139,53 @@ const Container = styled.div`
   margin-top: 20px;
   form {
     width: 100%;
-  }
-  label {
-    font-weight: 700;
-    font-size: 12px;
 
-  div.verification {
-    height: 12px;
-    font-size: 12px;
-    color: red;
-    margin-top: 8px;
-  }
-  div.addFileText {
-    font-size: 10px;
-    color: #adacad;
-    margin: 10px 0;
-  }
-  .input {
-    width: 100%;
-    height: 400px;
-    outline: none;
-    background-color: #f8f9fb;
-    border-radius: 10px;
-    padding: 0 15px;
-    margin-top: 10px;
-    :hover {
-      border: 1px solid #ff705a;
-      cursor: text;
-    }
-    :focus {
-      border: 1px solid #ff705a;
-    }
-    ::placeholder {
-      color: #9da5ac;
+    label {
       font-weight: 700;
+      font-size: 12px;
     }
-  }
+    div.verification {
+      height: 12px;
+      font-size: 12px;
+      color: red;
+      margin-top: 8px;
+    }
+    div.addFileText {
+      font-size: 10px;
+      color: #adacad;
+      margin: 10px 0;
+    }
+    input {
+      width: 100%;
+      height: 48px;
+      outline: none;
+      background-color: #f8f9fb;
+      border-radius: 10px;
+      padding: 0 15px;
+      margin-top: 10px;
+      :hover {
+        border: 1px solid #ff705a;
+        cursor: text;
+      }
+      :focus {
+        border: 1px solid #ff705a;
+      }
+      ::placeholder {
+        color: #9da5ac;
+        font-weight: 700;
+      }
+    }
 
-  input.file {
-    width: 90%;
-    /* height: 200px; */
+    input.file {
+      width: 90%;
+      /* height: 200px; */
 
-    :hover {
-      cursor: pointer;
+      :hover {
+        cursor: pointer;
+      }
     }
   }
 `;
-
 
 const Select = styled.div`
   margin-top: 10px;
