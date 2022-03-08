@@ -1,23 +1,41 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as CloseIcon } from '../../assets/icon-close.svg';
 import { ReactComponent as UpDownArrow } from '../../assets/icon-up-down.svg';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import { EditorState } from 'draft-js';
 import DropDownOptionInput from './DropDownOptionInput';
 
-const FormField = () => {
+import { EditorState, convertToRaw } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
+
+const FormField = ({ onSubmitHandler }) => {
+  // const [formState, setFormState] = useState();
+
   const [selectedType, setSelectedType] = useState('text');
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const [descriptionInput, setDescriptionInput] = useState('');
 
   const onEditorStateChange = (editorState) => {
+    // console.log(convertToRaw(editorState.getCurrentContent()).blocks[0]);
     setEditorState(editorState);
   };
+
+  useEffect(() => {
+    const rawContentState = convertToRaw(editorState.getCurrentContent());
+    const markup = draftToHtml(rawContentState);
+
+    // setTimeout(() => {
+    //   console.log(markup);
+    // }, 2000);
+    setDescriptionInput(markup);
+    // console.log(markup);
+  }, [editorState]);
 
   const setSelectValue = ({ target: { value } }) => {
     setSelectedType(value);
   };
+
 
   return (
     <Container>
@@ -26,9 +44,9 @@ const FormField = () => {
           <option value="text">텍스트</option>
           <option value="phone">전화번호</option>
           <option value="address">주소</option>
-          <option value="dropdown">드롭다운</option>
+          <option value="select">드롭다운</option>
           <option value="file">첨부파일</option>
-          <option value="license">이용약관</option>
+          <option value="agreement">이용약관</option>
         </select>
         <input type="text" id="labelName" />
         <CheckBox>
@@ -81,7 +99,7 @@ const FormField = () => {
     </Container>
   );
 };
-const Container = styled.section`
+const Container = styled.form`
   width: 100%;
   border: 1px solid #f2f2f2;
   border-radius: 7px;
