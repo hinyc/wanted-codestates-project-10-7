@@ -7,9 +7,12 @@ export default function AttachmentFile({ data }) {
   const [file, setFile] = useState(null);
   const [percent, setPercent] = useState(0);
   const [previewImg, setPreviewImg] = useState(null);
-
+  const [newUrl, setNewUrl] = useState('');
   const setOnChange = async (e) => {
     const file = e.target.files[0];
+    const newurl = URL.createObjectURL(file);
+    setNewUrl(newurl);
+    console.log('??', newurl);
     setFile(file);
     const img = await (() => {
       return new Promise((res, rej) => {
@@ -48,7 +51,7 @@ export default function AttachmentFile({ data }) {
           {previewImg && (
             <>
               <GrayBackGround />
-              <Image src={previewImg.imgUrl} alt={previewImg.fileName} />
+              <Image src={newUrl} alt={previewImg.fileName} />
             </>
           )}
         </FileDropper>
