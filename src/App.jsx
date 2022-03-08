@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import Submit from './pages/Submit';
 import UserSubmissionList from './pages/UserSubmissionLists';
 import DragnDrop from './components/createForm/DragnDrop';
+import Terms from './components/Submit/Terms';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/submit" element={<Submit />} />
+          <Route path="/submit/terms" element={<Terms />} />
           <Route path="/dragdrop" element={<DragnDrop />} />
           <Route path="/create-form" element={<CreateForm />} />
           <Route path="/submission" element={<UserSubmissionList />} />

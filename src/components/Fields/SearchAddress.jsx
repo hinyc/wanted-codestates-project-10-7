@@ -8,6 +8,7 @@ import DetailAddress from './DetailAddress';
 const SearchAddress = ({ props, setIsOpen, id }) => {
   const [userSelectAddress, setUserSelectAddress] = useState();
   const dispatch = useDispatch();
+
   const handleComplete = (data) => {
     let fullAddress = data.address;
     let extraAddress = '';
@@ -24,9 +25,7 @@ const SearchAddress = ({ props, setIsOpen, id }) => {
     }
     dispatch(addSubmitData(id, fullAddress));
     setUserSelectAddress(fullAddress);
-    console.log(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
   };
-  console.log(userSelectAddress);
 
   const postCodeStyle = {
     width: '100%',
@@ -79,7 +78,7 @@ const SearchAddressBox = styled.div`
   left: 0;
   animation: boxFade 0.35s ease;
   /* 여기 */
-  z-index: 1;
+  z-index: 99;
   @keyframes boxFade {
     0% {
       opacity: 0;

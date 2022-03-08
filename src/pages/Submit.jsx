@@ -1,7 +1,9 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import Form from '../components/Submit/Form';
+import SubmitButton from '../components/Submit/SubmitButton';
 import TopLabel from '../components/Submit/TopLabel';
+
 export default function Submit() {
   const form = [
     {
@@ -101,6 +103,7 @@ export default function Submit() {
       {form.map((el) => {
         return <Form key={el.id} data={el} />;
       })}
+      <SubmitButton />
     </Container>
   );
 }
@@ -111,5 +114,4 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 0 0 3px black;
 `;
