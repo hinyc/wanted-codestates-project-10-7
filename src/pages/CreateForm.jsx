@@ -2,9 +2,11 @@ import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import FormField from '../components/createForm/FormField';
 import DragnDrop from '../components/createForm/DragnDrop';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function CreateForm() {
   const [fieldList, setFieldList] = useState([]);
+  const [formState, setFormState] = useState({ id: uuidv4() });
 
   const onSubmitHandler = useCallback((fieldFormData) => {
     // 저장하기 버튼 클릭시 각 필드의 input 값들 전부 저장하기
