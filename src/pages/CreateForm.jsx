@@ -37,7 +37,8 @@ export default function CreateForm() {
 }
 
 const Wrapper = styled.div`
-  width: 500px;
+  width: 100%;
+  max-width: 500px;
   height: auto;
   display: flex;
   flex-direction: column;

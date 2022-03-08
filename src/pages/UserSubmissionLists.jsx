@@ -40,6 +40,8 @@ const H1 = styled.h1`
   text-align: center;
 `;
 const Div = styled.div`
+  width: 100%;
+  max-width: 500px;
   position: absolute;
   left: 50%;
   transform: translate(-50%, 0%);
