@@ -28,9 +28,8 @@ function App() {
 export default App;
 
 const AllWrapper = styled.div`
-  width: 500px;
-  height: auto;
-  min-height: 100vh;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-start;
