@@ -19,10 +19,10 @@ export default function AttachmentFile({ data }) {
           fileReader.addEventListener('load', (e) => {
             res({ imgUrl: e.target.result, fileName: file.name });
           });
+
           fileReader.addEventListener('progress', (event) => {
             console.log(event);
             if (event.loaded && event.total) {
-              console.log(event.loaded);
               const percent = (event.loaded / event.total) * 100;
               setPercent(Math.round(percent));
             }
@@ -34,8 +34,10 @@ export default function AttachmentFile({ data }) {
     })();
     setPreviewImg(img);
   };
-
   const fileName = previewImg ? '눌러서 파일 변경' : '눌러서 파일 등록';
+
+  /* imgUrl 받는 곳 */
+  console.log(previewImg);
   return (
     <>
       <form>
@@ -60,6 +62,7 @@ const FileDropper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 500px;
   height: 200px;
   border: 1px solid #6c6c6c;
   border-radius: 5px;
@@ -76,12 +79,12 @@ const FileInput = styled.input.attrs({ type: 'file', accept: 'image/*' })`
   opacity: 0;
   width: 100%;
   height: 100%;
-  cursor: pointer;
   z-index: 9;
 `;
 const P = styled.p`
   font-size: 20px;
   z-index: 10;
+  pointer-events: none;
 `;
 const GrayBackGround = styled.div`
   position: absolute;
