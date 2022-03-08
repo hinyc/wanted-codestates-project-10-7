@@ -1,20 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import FormField from '../components/createForm/FormField';
 import DragnDrop from '../components/createForm/DragnDrop';
 
 export default function CreateForm() {
+  const [fieldList, setFieldList] = useState({});
+
+  const onSubmitHandler = (fieldFormData) => {
+    // 저장하기 버튼 클릭시 각 필드의 input 값들 전부 저장하기
+    setFieldList((prevList) => ({
+      ...prevList,
+      fieldFormData,
+    }));
+  };
+  const onClickHandler = () => {};
+
+  useEffect(() => {
+    console.log(fieldList);
+  }, [fieldList]);
+
   return (
     <Wrapper>
       <h1>폼 형식 생성</h1>
       <section style={{ display: 'flex', flexDirection: 'column' }}>
         <label htmlFor="formTitle">제목</label>
-        <input type="text" name="제목" id="formTitle" />
+        <input type="text" name="formTitle" id="formTitle" />
       </section>
       <section style={{ display: 'flex', flexDirection: 'column' }}>
         <label>필드목록</label>
-        <FormField />
+        <FormField onSubmitHandler />
       </section>
+      <button onClick={onSubmitHandler}>저장하기</button>
       <DragnDrop />
     </Wrapper>
   );
