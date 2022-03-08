@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as CloseIcon } from '../../assets/icon-close.svg';
 import { ReactComponent as UpDownArrow } from '../../assets/icon-up-down.svg';
+import { Editor } from 'react-draft-wysiwyg';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import { EditorState } from 'draft-js';
 
 const FormField = () => {
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+
+  const onEditorStateChange = (editorState) => {
+    setEditorState(editorState);
+  };
+
   return (
     <Container>
       <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
@@ -30,6 +39,35 @@ const FormField = () => {
       <div className="placeholder-description">
         <input type="text" placeholder="플레이스홀더 예" />
       </div>
+      <EditorWrapper>
+        <Editor
+          wrapperClassName="wrapper-class"
+          editorClassName="editor-class"
+          toolbarClassName="toolbar-class"
+          toolbar={{
+            options: [
+              'inline',
+              'list',
+              'image',
+              'embedded',
+              'link',
+              'blockType',
+            ],
+            inline: {
+              options: ['bold', 'italic', 'strikethrough', 'underline'],
+            },
+            list: { options: ['unordered', 'ordered'] },
+            link: { options: ['link'] },
+            blockType: {
+              isDropdown: false,
+              options: ['Normal', 'H1', 'H2', 'H3'],
+            },
+          }}
+          editorState={editorState}
+          onEditorStateChange={onEditorStateChange}
+        />
+        ;
+      </EditorWrapper>
     </Container>
   );
 };
@@ -111,6 +149,17 @@ const CheckBox = styled.div`
   #isRequired {
     border: none;
     margin: 0 5px;
+  }
+`;
+const EditorWrapper = styled.div`
+  width: 100%;
+
+  .wrapper-class {
+    // height: 100%;
+  }
+  .editor-class {
+    // height: 100%;
+    padding: 0 10px;
   }
 `;
 export default FormField;
