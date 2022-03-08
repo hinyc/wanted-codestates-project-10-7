@@ -3,12 +3,14 @@ import AttachmentFile from '../Fields/attachmentFile';
 import { useDispatch, useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
 import { addSubmitData, initSubmitData } from '../../modules/submit';
-import SearchAddress from '../Field/SearchAddress';
+import SearchAddress from '../Fields/SearchAddress';
+import Terms from './Terms';
 
 export default function Form({ data }) {
   const [showVerification, setShowVerification] = useState(false);
   const [showOption, setShowOption] = useState('');
   const [showResearchModal, setShowResearchModal] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
   const [agreementState, setAgreementState] = useState(false);
   const dispatch = useDispatch();
 
@@ -16,7 +18,7 @@ export default function Form({ data }) {
   const id = data.id;
   const type = data.type;
   const submitData = useSelector((state) => state.submit);
-
+  console.log(submitData);
   const eventHandler = (e) => {
     const currentValue = value.current.value;
     switch (data.type) {
@@ -40,30 +42,25 @@ export default function Form({ data }) {
       case 'select':
         dispatch(addSubmitData(data.id, e.target.value));
         setShowOption('');
-
         break;
 
       default:
         break;
     }
   };
-  console.log(submitData);
+
   const optionSelectHandler = (id) => {
-    console.log('click');
-    console.log(id, showOption);
     if (id !== showOption) {
       setShowOption(id);
     }
   };
   //이벤트 블러 실행시 데이터 저장
-  const backgroundHandler = () => {
-    // 정상 기능동작 않함, 수정필요
-    setShowOption('');
-  };
-
-  const searchHandler = () => {
+  const backgroundHandler = () => setShowOption('');
+  const searchHandler = () => setShowResearchModal(true);
+  const agreementStateHandler = () => setAgreementState(!agreementState);
+  const termsHandler = () => {
+    setShowTerms(!showTerms);
     console.log('click');
-    setShowResearchModal(true);
   };
 
   return (
@@ -115,7 +112,7 @@ export default function Form({ data }) {
               className="current-selector"
               onClick={() => optionSelectHandler(data.id)}
             >
-              {submitData[data.id] || data.options[0]}
+              {submitData[data.id]}
             </div>
             <BackGround onClick={backgroundHandler} />
             {showOption === data.id && (
@@ -136,12 +133,19 @@ export default function Form({ data }) {
       {type === 'agreement' && (
         <Agreement>
           <div className="miniWrap">
-            <div className="check">
-              <div className="symbol">✔︎</div>
+            <div className="check" onClick={agreementStateHandler}>
+              {agreementState && (
+                <div className="symbol" onClick={agreementStateHandler}>
+                  ✔︎
+                </div>
+              )}
             </div>
             <div className="text">{`${data.label} (필수)`}</div>
           </div>
-          <div className="arrow">&gt;</div>
+          <div className="arrow" onClick={termsHandler}>
+            &gt;
+          </div>
+          {showTerms && <Terms data={data} termsHandler={termsHandler} />}
         </Agreement>
       )}
     </Container>
@@ -176,7 +180,11 @@ const FormSt = styled.div`
   div.address-search {
     width: 100%;
     height: 48px;
+    line-height: 48px;
+    padding-left: 15px;
     background-color: #f5f8fa;
+    border-radius: 10px;
+
     :hover {
       border: 1px solid #00b9ff;
       cursor: text;
@@ -255,7 +263,7 @@ const OptionWrapper = styled.div`
   top: 46px;
   left: -1px;
   background-color: #f7fafb;
-  z-index: 99;
+  z-index: 90;
 
   option {
     height: 48px;
@@ -297,8 +305,13 @@ const Agreement = styled.div`
     border: 1px solid #d6d9dc;
     border-radius: 50%;
     margin-right: 10px;
-    overflow: hidden;
+    /* overflow: hidden; */
+    position: relative;
+    :hover {
+      cursor: pointer;
+    }
     .symbol {
+      border-radius: 50%;
       background-color: #ff5a5f;
       color: #fff;
       font-size: 12px;
@@ -306,10 +319,19 @@ const Agreement = styled.div`
       height: 20px;
       text-align: center;
       line-height: 20px;
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      :hover {
+        cursor: pointer;
+      }
     }
   }
   div.arrow {
     color: #8d959d;
     font-size: 20px;
+    :hover {
+      cursor: pointer;
+    }
   }
 `;

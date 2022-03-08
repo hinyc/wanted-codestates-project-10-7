@@ -61,5 +61,4 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 0 0 3px black;
 `;
