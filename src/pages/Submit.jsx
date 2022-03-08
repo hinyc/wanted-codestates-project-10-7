@@ -1,10 +1,13 @@
 import React, { useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Form from '../components/Submit/Form';
 import SubmitButton from '../components/Submit/SubmitButton';
 import TopLabel from '../components/Submit/TopLabel';
 
 export default function Submit() {
+  const { formId } = useParams();
+  // const form = window.localStorage.getItem(formId);
   const form = [
     {
       id: 'name',
@@ -53,7 +56,7 @@ export default function Submit() {
       {form.map((el) => {
         return <Form key={el.id} data={el} />;
       })}
-      <SubmitButton />
+      {/* <SubmitButton /> */}
     </Container>
   );
 }

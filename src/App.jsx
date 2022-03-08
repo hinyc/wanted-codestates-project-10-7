@@ -18,11 +18,14 @@ function App() {
       <AllWrapper>
         <Routes>
           <Route path="/" element={<Main />} />
-          <Route path="/submit" element={<Submit />} />
+          <Route path="/submit/:formId" element={<Submit />} />
           <Route path="/submit/terms" element={<Terms />} />
           <Route path="/dragdrop" element={<DragnDrop />} />
           <Route path="/create-form" element={<CreateForm />} />
-          <Route path="/submission" element={<UserSubmissionList />} />
+          <Route
+            path="/submit/:formId/list/"
+            element={<UserSubmissionList />}
+          />
         </Routes>
       </AllWrapper>
     </Router>

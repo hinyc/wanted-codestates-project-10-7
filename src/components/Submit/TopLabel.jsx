@@ -1,11 +1,9 @@
-import getRangeBoundingClientRect from 'draft-js/lib/getRangeBoundingClientRect';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
+// import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
-export default function SubmitButton() {
-  const [submitState, setSubmitState] = useState(false);
+export default function TopLabel() {
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
 
@@ -17,10 +15,6 @@ export default function SubmitButton() {
     }
   };
   window.addEventListener('wheel', setOnState);
-  const submitDate = useSelector((state) => state.submit);
-  useEffect(() => {
-    console.log(submitDate);
-  }, [submitDate]);
 
   return (
     <Container isScrolled={isScrolled}>

@@ -10,7 +10,7 @@ const BasicSurvey = ({ id }) => {
       <BasicSurveyBox>
         <TopBox
           onClick={() => {
-            navigate('/submit');
+            navigate(`/submit/${id}`);
           }}
         >
           <p className="note_icons">📄</p>
@@ -20,7 +20,7 @@ const BasicSurvey = ({ id }) => {
           <p
             className="on_list"
             onClick={() => {
-              navigate('/submission');
+              navigate(`/submit/${id}/list`);
             }}
           >
             제출목록
