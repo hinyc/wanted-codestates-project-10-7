@@ -14,55 +14,6 @@ export default function Submit() {
       placeholder: '주민등록상 이름 입력',
     },
     {
-      id: 'name',
-      type: 'text',
-      required: true,
-      label: '이름',
-      placeholder: '주민등록상 이름 입력',
-    },
-    {
-      id: 'name',
-      type: 'text',
-      required: true,
-      label: '이름',
-      placeholder: '주민등록상 이름 입력',
-    },
-    {
-      id: 'name',
-      type: 'text',
-      required: true,
-      label: '이름',
-      placeholder: '주민등록상 이름 입력',
-    },
-    {
-      id: 'name',
-      type: 'text',
-      required: true,
-      label: '이름',
-      placeholder: '주민등록상 이름 입력',
-    },
-    {
-      id: 'name',
-      type: 'text',
-      required: true,
-      label: '이름',
-      placeholder: '주민등록상 이름 입력',
-    },
-    {
-      id: 'name',
-      type: 'text',
-      required: true,
-      label: '이름',
-      placeholder: '주민등록상 이름 입력',
-    },
-    {
-      id: 'name',
-      type: 'text',
-      required: true,
-      label: '이름',
-      placeholder: '주민등록상 이름 입력',
-    },
-    {
       id: 'phone',
       type: 'phone',
       required: true,
@@ -99,7 +50,6 @@ export default function Submit() {
 
   return (
     <Container>
-      <TopLabel />
       {form.map((el) => {
         return <Form key={el.id} data={el} />;
       })}

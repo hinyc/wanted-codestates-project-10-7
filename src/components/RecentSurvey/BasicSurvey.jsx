@@ -1,16 +1,30 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-const BasicSurvey = () => {
+const BasicSurvey = ({ id }) => {
+  const navigate = useNavigate();
+
   return (
     <>
       <BasicSurveyBox>
-        <TopBox>
+        <TopBox
+          onClick={() => {
+            navigate('/submit');
+          }}
+        >
           <p className="note_icons">📄</p>
           <h1>기본 설문지</h1>
         </TopBox>
         <BottomBox>
-          <p className="on_list">제출목록</p>
+          <p
+            className="on_list"
+            onClick={() => {
+              navigate('/submission');
+            }}
+          >
+            제출목록
+          </p>
           <p className="delete">삭제</p>
         </BottomBox>
       </BasicSurveyBox>

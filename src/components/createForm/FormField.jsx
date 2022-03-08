@@ -62,8 +62,8 @@ const FormField = ({ onSubmitHandler }) => {
       <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
         <select
           name="type"
-          // onChange={setSelectValue}
-          onChange={onInputChangeHandler}
+          onChange={setSelectValue}
+          // onChange={onInputChangeHandler}
         >
           <option value="text">텍스트</option>
           <option value="phone">전화번호</option>

@@ -1,11 +1,13 @@
 import getRangeBoundingClientRect from 'draft-js/lib/getRangeBoundingClientRect';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 export default function SubmitButton() {
   const [submitState, setSubmitState] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const navigate = useNavigate();
 
   const setOnState = () => {
     if (window.scrollY > 0) {
@@ -22,6 +24,13 @@ export default function SubmitButton() {
 
   return (
     <Container isScrolled={isScrolled}>
+      <button
+        onClick={() => {
+          navigate('/');
+        }}
+      >
+        홈가기
+      </button>
       <span style={{ fontSize: '20px' }}>데이터블 폼</span>
     </Container>
   );

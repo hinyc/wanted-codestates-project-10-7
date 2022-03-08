@@ -8,11 +8,13 @@ import Submit from './pages/Submit';
 import UserSubmissionList from './pages/UserSubmissionLists';
 import DragnDrop from './components/createForm/DragnDrop';
 import Terms from './components/Submit/Terms';
+import TopLabel from './components/Submit/TopLabel';
 
 function App() {
   return (
     <Router>
       <GlobalStyles />
+      <TopLabel />
       <AllWrapper>
         <Routes>
           <Route path="/" element={<Main />} />
@@ -36,4 +38,5 @@ const AllWrapper = styled.div`
   align-items: center;
   justify-content: flex-start;
   flex-direction: column;
+  margin-top: 76px;
 `;
