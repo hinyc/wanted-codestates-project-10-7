@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as CloseIcon } from '../../assets/icon-close.svg';
 import { ReactComponent as UpDownArrow } from '../../assets/icon-up-down.svg';
@@ -9,38 +9,60 @@ import DropDownOptionInput from './DropDownOptionInput';
 import { EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 
-const FormField = ({ onSubmitHandler }) => {
-  // const [formState, setFormState] = useState();
+const initialState = {
+  type: 'text',
+  label: '',
+  required: false,
+  placeholder: '',
+  description: '',
+  options: [],
+  contents: '',
+};
 
+const FormField = ({ onSubmitHandler }) => {
+  const [fieldState, setFieldState] = useState(initialState);
   const [selectedType, setSelectedType] = useState('text');
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  const [descriptionInput, setDescriptionInput] = useState('');
+  const isRequiredRef = useRef();
+  const labelRef = useRef();
+  const placeholderRef = useRef();
 
   const onEditorStateChange = (editorState) => {
-    // console.log(convertToRaw(editorState.getCurrentContent()).blocks[0]);
     setEditorState(editorState);
   };
-
   useEffect(() => {
-    const rawContentState = convertToRaw(editorState.getCurrentContent());
-    const markup = draftToHtml(rawContentState);
-
-    // setTimeout(() => {
-    //   console.log(markup);
-    // }, 2000);
-    setDescriptionInput(markup);
-    // console.log(markup);
-  }, [editorState]);
+    // console.log(fieldState);
+    onSubmitHandler(fieldState);
+  }, [fieldState]);
 
   const setSelectValue = ({ target: { value } }) => {
     setSelectedType(value);
   };
 
+  const submitForm = (e) => {
+    e.preventDefault();
+
+    // draft.js로 입력 받은 내용 html 형태로 변환헤서 저장
+    const rawContentState = convertToRaw(editorState.getCurrentContent());
+    const markup = draftToHtml(rawContentState);
+
+    // console.log(placeholderRef.current);  // null 출력됨
+
+    // 필드에 입력된 값들을 저장
+    setFieldState((prevState) => ({
+      ...prevState,
+      type: selectedType,
+      label: labelRef.current.value,
+      required: isRequiredRef.current.checked,
+      // placeholder: placeholderRef.current.value,
+      description: markup,
+    }));
+  };
 
   return (
     <Container>
       <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
-        <select onChange={setSelectValue}>
+        <select name="type" onChange={setSelectValue}>
           <option value="text">텍스트</option>
           <option value="phone">전화번호</option>
           <option value="address">주소</option>
@@ -48,10 +70,15 @@ const FormField = ({ onSubmitHandler }) => {
           <option value="file">첨부파일</option>
           <option value="agreement">이용약관</option>
         </select>
-        <input type="text" id="labelName" />
+        <input ref={labelRef} name="label" type="text" id="label" />
         <CheckBox>
-          <input type="checkbox" id="isRequired" />
-          <label htmlFor="isRequired">필수</label>
+          <input
+            name="required"
+            type="checkbox"
+            id="required"
+            ref={isRequiredRef}
+          />
+          <label htmlFor="required">필수</label>
         </CheckBox>
         <button className="drag-button">
           <UpDownArrow />
@@ -61,10 +88,14 @@ const FormField = ({ onSubmitHandler }) => {
         </button>
       </div>
       <div className="placeholder-description">
-        {selectedType === 'dropdown' ? (
+        {selectedType === 'select' ? (
           <DropDownOptionInput />
         ) : (
-          <input type="text" placeholder="플레이스홀더 예" />
+          <input
+            ref={placeholderRef}
+            type="text"
+            placeholder="플레이스홀더 예"
+          />
         )}
       </div>
       <EditorWrapper>
@@ -94,8 +125,8 @@ const FormField = ({ onSubmitHandler }) => {
           editorState={editorState}
           onEditorStateChange={onEditorStateChange}
         />
-        ;
       </EditorWrapper>
+      <button onClick={submitForm}>필드 값 저장</button>
     </Container>
   );
 };
@@ -174,7 +205,7 @@ const CheckBox = styled.div`
   display: flex;
   align-items: center;
 
-  #isRequired {
+  #required {
     border: none;
     margin: 0 5px;
   }

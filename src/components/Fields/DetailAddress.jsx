@@ -15,7 +15,7 @@ const DetailAddress = ({ userSelectAddress, setIsOpen, id }) => {
     }
   };
 
-  const complateAddress = () => {
+  const completeAddress = () => {
     dispatch(
       addSubmitData(id, userSelectAddress + choiceAddress.current.value),
     );
@@ -33,7 +33,7 @@ const DetailAddress = ({ userSelectAddress, setIsOpen, id }) => {
           ref={choiceAddress}
           onChange={onButtonHandler}
         />
-        <SaveButton disabled={!buttonDisabled} onClick={complateAddress}>
+        <SaveButton disabled={!buttonDisabled} onClick={completeAddress}>
           저장
         </SaveButton>
       </DetailAddressBox>
@@ -53,6 +53,11 @@ const DetailAddressBox = styled.div`
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
+
+  @media (max-width: 400px) {
+    height: 92vh;
+    padding: 30px;
+  }
 `;
 
 const Label = styled.div`

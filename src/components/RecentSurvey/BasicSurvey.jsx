@@ -1,16 +1,72 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-const BasicSurvey = () => {
+const form = [
+  {
+    id: 'name',
+    type: 'text',
+    required: true,
+    label: '이름',
+    placeholder: '주민등록상 이름 입력',
+  },
+  {
+    id: 'phone',
+    type: 'phone',
+    required: true,
+    label: '휴대폰 번호',
+  },
+  {
+    id: 'address',
+    type: 'address',
+    required: true,
+    label: '배송지',
+  },
+  {
+    id: 'input_0',
+    type: 'select',
+    label: '옵션1',
+    options: ['S', 'L', 'XL', 'XXL'],
+    required: true,
+  },
+  {
+    id: 'input_1',
+    type: 'file',
+    label: '첨부파일',
+    required: false,
+    description: '<p>첨부파일은 위와 같이 입력할 수 있습니다.</p>',
+  },
+  {
+    id: 'agreement_0',
+    type: 'agreement',
+    label: '개인정보 수집 약관 동의',
+    required: true,
+    contents: '<p>(개인정보 수집 및 약관 내용)</p>',
+  },
+];
+
+const BasicSurvey = ({ id }) => {
+  const navigate = useNavigate();
+  const moveHandler = () => {
+    window.localStorage.setItem('testForm', JSON.stringify(form));
+    navigate(`/submit/${id}`);
+  };
   return (
     <>
       <BasicSurveyBox>
-        <TopBox>
+        <TopBox onClick={moveHandler}>
           <p className="note_icons">📄</p>
           <h1>기본 설문지</h1>
         </TopBox>
         <BottomBox>
-          <p className="on_list">제출목록</p>
+          <p
+            className="on_list"
+            onClick={() => {
+              navigate(`/submit/${id}/list`);
+            }}
+          >
+            제출목록
+          </p>
           <p className="delete">삭제</p>
         </BottomBox>
       </BasicSurveyBox>

@@ -1,8 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import BasicSurvey from './BasicSurvey';
 
 const RecentSurvey = () => {
+  const navigate = useNavigate();
   return (
     <>
       <RecentSurveyBox>
@@ -11,11 +13,17 @@ const RecentSurvey = () => {
             <h1>✨ 최근 설문지</h1>
           </LeftBox>
           <RightBox>
-            <PlusBtn>설문지 추가하기</PlusBtn>
+            <PlusBtn
+              onClick={() => {
+                navigate('/create-form');
+              }}
+            >
+              설문지 추가하기
+            </PlusBtn>
           </RightBox>
         </TopBox>
         <SurveyListBox>
-          <BasicSurvey />
+          <BasicSurvey id={'testForm'} />
         </SurveyListBox>
       </RecentSurveyBox>
     </>

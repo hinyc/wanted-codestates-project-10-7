@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import DaumPostcode from 'react-daum-postcode';
-import { useDispatch } from 'react-redux';
-import { addSubmitData } from '../../modules/submit';
 import DetailAddress from './DetailAddress';
 
 const SearchAddress = ({ props, setIsOpen, id }) => {
   const [userSelectAddress, setUserSelectAddress] = useState();
-  const dispatch = useDispatch();
+
   const handleComplete = (data) => {
     let fullAddress = data.address;
     let extraAddress = '';
@@ -22,11 +20,8 @@ const SearchAddress = ({ props, setIsOpen, id }) => {
       }
       fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
-    dispatch(addSubmitData(id, fullAddress));
     setUserSelectAddress(fullAddress);
-    console.log(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
   };
-  console.log(userSelectAddress);
 
   const postCodeStyle = {
     width: '100%',
@@ -55,6 +50,7 @@ const SearchAddress = ({ props, setIsOpen, id }) => {
             <DetailAddress
               userSelectAddress={userSelectAddress}
               setIsOpen={setIsOpen}
+              id={id}
             />
           ) : (
             <DaumPostcode
@@ -79,7 +75,7 @@ const SearchAddressBox = styled.div`
   left: 0;
   animation: boxFade 0.35s ease;
   /* 여기 */
-  z-index: 1;
+  z-index: 99;
   @keyframes boxFade {
     0% {
       opacity: 0;
@@ -100,7 +96,6 @@ const Container = styled.div`
   border-radius: 12px;
   box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
   animation: containerFade 0.35s ease;
-
   @keyframes containerFade {
     0% {
       top: 42.5%;
@@ -109,7 +104,6 @@ const Container = styled.div`
       top: 50%;
     }
   }
-
   .post_code {
     @media (max-width: 400px) {
       width: 100% !important;
@@ -127,7 +121,6 @@ const Title = styled.div`
   align-items: center;
   background-color: #00b9ff;
   border-radius: 12px 12px 0 0;
-
   @media (max-width: 400px) {
     height: 8vh;
     padding: 0 20px;
@@ -158,7 +151,6 @@ const Icon = styled.div`
   top: 0;
   right: 0;
   cursor: pointer;
-
   @media (max-width: 400px) {
     top: 7px;
     right: 15px;
