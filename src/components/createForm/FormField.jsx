@@ -5,7 +5,6 @@ import { ReactComponent as UpDownArrow } from '../../assets/icon-up-down.svg';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import DropDownOptionInput from './DropDownOptionInput';
-
 import { EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 
@@ -19,8 +18,14 @@ const initialState = {
   contents: '',
 };
 
-const FormField = ({ onSubmitHandler }) => {
-  const [fieldState, setFieldState] = useState(initialState);
+const FormField = React.memo(function FormField({
+  index,
+  fieldState,
+  fieldList,
+  setFieldList,
+  onRemoveField,
+}) {
+  // const [fieldState, setFieldState] = useState(initialState);
   const [selectedType, setSelectedType] = useState('text');
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const isRequiredRef = useRef();
@@ -30,34 +35,64 @@ const FormField = ({ onSubmitHandler }) => {
   const onEditorStateChange = (editorState) => {
     setEditorState(editorState);
   };
-  useEffect(() => {
-    // console.log(fieldState);
-    onSubmitHandler(fieldState);
-  }, [fieldState]);
 
   const setSelectValue = ({ target: { value } }) => {
     setSelectedType(value);
+    console.log(fieldState);
   };
 
-  const submitForm = (e) => {
-    e.preventDefault();
+  const removeClickHandler = () => {
+    onRemoveField(fieldState.id);
+  };
 
-    // draft.js로 입력 받은 내용 html 형태로 변환헤서 저장
+  // const submitForm = (e) => {
+  //   e.preventDefault();
+
+  //   // draft.js로 입력 받은 내용 html 형태로 변환헤서 저장
+  //   const rawContentState = convertToRaw(editorState.getCurrentContent());
+  //   const markup = draftToHtml(rawContentState);
+
+  //   // 필드에 입력된 값들을 부모(CreateForm)에 전달
+  //   onSubmitHandler({
+  //     ...fieldState,
+  //     type: selectedType,
+  //     label: labelRef.current.value,
+  //     required: isRequiredRef.current.checked,
+  //     // placeholder: placeholderRef.current.value,
+  //     description: markup,
+  //   });
+  //   /*
+  //   setFieldState((prevState) => ({
+  //     ...prevState,
+  //     type: selectedType,
+  //     label: labelRef.current.value,
+  //     required: isRequiredRef.current.checked,
+  //     // placeholder: placeholderRef.current.value,
+  //     description: markup,
+  //   }));
+  //   */
+  // };
+  /*
+  const onChangeInputHandler = (e) => {
+      //   // draft.js로 입력 받은 내용 html 형태로 변환헤서 저장
     const rawContentState = convertToRaw(editorState.getCurrentContent());
     const markup = draftToHtml(rawContentState);
 
-    // console.log(placeholderRef.current);  // null 출력됨
+    const newFieldState = {
+      ...fieldState,
+      [e.target.name]: e.target.value
+    }
 
-    // 필드에 입력된 값들을 저장
-    setFieldState((prevState) => ({
-      ...prevState,
+    setFieldList({
+      ...fieldState,
       type: selectedType,
       label: labelRef.current.value,
       required: isRequiredRef.current.checked,
       // placeholder: placeholderRef.current.value,
       description: markup,
-    }));
-  };
+    });
+  }
+  */
 
   return (
     <Container>
@@ -70,7 +105,7 @@ const FormField = ({ onSubmitHandler }) => {
           <option value="file">첨부파일</option>
           <option value="agreement">이용약관</option>
         </select>
-        <input ref={labelRef} name="label" type="text" id="label" />
+        <FieldLabelInput ref={labelRef} name="label" type="text" id="label" />
         <CheckBox>
           <input
             name="required"
@@ -83,7 +118,7 @@ const FormField = ({ onSubmitHandler }) => {
         <button className="drag-button">
           <UpDownArrow />
         </button>
-        <button className="delete-button">
+        <button className="delete-button" onClick={removeClickHandler}>
           <CloseIcon fill="#fff" />
         </button>
       </div>
@@ -126,10 +161,10 @@ const FormField = ({ onSubmitHandler }) => {
           onEditorStateChange={onEditorStateChange}
         />
       </EditorWrapper>
-      <button onClick={submitForm}>필드 값 저장</button>
+      {/* <button onClick={submitForm}>필드 값 저장</button> */}
     </Container>
   );
-};
+});
 const Container = styled.form`
   width: 100%;
   border: 1px solid #f2f2f2;
@@ -156,15 +191,6 @@ const Container = styled.form`
     option {
       background-color: #fff;
     }
-  }
-  #labelName {
-    width: 50%;
-    height: 36px;
-    padding: 5px;
-    border-right: 1px solid #f2f2f2;
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 15px;
   }
   button {
     width: 36px;
@@ -198,6 +224,16 @@ const Container = styled.form`
     }
   }
 `;
+const FieldLabelInput = styled.input`
+  width: 50%;
+  height: 36px;
+  padding: 5px;
+  border-right: 1px solid #f2f2f2;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 15px;
+`;
+
 const CheckBox = styled.div`
   width: 55px;
   height: 36px;
