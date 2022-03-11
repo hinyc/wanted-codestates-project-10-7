@@ -27,6 +27,7 @@ const FormField = React.memo(function FormField({
 }) {
   const [selectedType, setSelectedType] = useState('text');
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const [editorAsHtml, setEditorAsHtml] = useState();
   const requiredRef = useRef();
   const labelRef = useRef();
   const placeholderRef = useRef();
@@ -37,13 +38,7 @@ const FormField = React.memo(function FormField({
     // draft.js로 입력 받은 내용 html 형태로 변환헤서 저장
     const rawContentState = convertToRaw(editorState.getCurrentContent());
     const htmlState = draftToHtml(rawContentState);
-
-    const newFieldState = {
-      ...fieldState,
-      description: htmlState,
-    };
-    // 부모 컴포넌트에 변경된 필드 상태 전달
-    updateField(newFieldState);
+    setEditorAsHtml(htmlState);
   };
 
   const setSelectValue = ({ target: { value } }) => {
@@ -61,31 +56,48 @@ const FormField = React.memo(function FormField({
     onRemoveField(fieldState.id);
   };
 
+  // const submitForm = (e) => {
+  //   e.preventDefault();
+
+  //   // draft.js로 입력 받은 내용 html 형태로 변환헤서 저장
+  //   const rawContentState = convertToRaw(editorState.getCurrentContent());
+  //   const markup = draftToHtml(rawContentState);
+
+  //   // 필드에 입력된 값들을 부모(CreateForm)에 전달
+  //   onSubmitHandler({
+  //     ...fieldState,
+  //     type: selectedType,
+  //     label: labelRef.current.value,
+  //     required: requiredRef.current.checked,
+  //     // placeholder: placeholderRef.current.value,
+  //     description: markup,
+  //   });
+  //   /*
+  //   setFieldState((prevState) => ({
+  //     ...prevState,
+  //     type: selectedType,
+  //     label: labelRef.current.value,
+  //     required: requiredRef.current.checked,
+  //     // placeholder: placeholderRef.current.value,
+  //     description: markup,
+  //   }));
+  //   */
+  // };
+
   const onChangeInputHandler = (e) => {
     // console.log(e.target.name, e.target.value);
     const newFieldState = {
       ...fieldState,
       type: selectedType,
+      label: labelRef.current.value,
       required: requiredRef.current.checked,
       [e.target.name]: e.target.value,
+      description: editorAsHtml,
     };
 
     // 부모 컴포넌트에 변경된 필드 상태 전달
     updateField(newFieldState);
   };
-
-  const onChangeOptions = (newOptions) => {
-    const newFieldState = {
-      ...fieldState,
-      options: newOptions,
-    };
-
-    updateField(newFieldState);
-  };
-
-  useEffect(() => {
-    console.log(fieldState);
-  }, [fieldState]);
 
   return (
     <Container>
@@ -124,10 +136,7 @@ const FormField = React.memo(function FormField({
       </div>
       <div className="placeholder-description">
         {selectedType === 'select' ? (
-          <DropDownOptionInput
-            options={fieldState.options}
-            changeOptions={onChangeOptions}
-          />
+          <DropDownOptionInput />
         ) : (
           <input
             ref={placeholderRef}
@@ -164,6 +173,7 @@ const FormField = React.memo(function FormField({
           onEditorStateChange={onEditorStateChange}
         />
       </EditorWrapper>
+      {/* <button onClick={submitForm}>필드 값 저장</button> */}
     </Container>
   );
 });

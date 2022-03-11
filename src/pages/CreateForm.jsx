@@ -64,7 +64,7 @@ export default function CreateForm() {
     }
   }, [fieldList]);
 
-  console.log(forms, forms);
+  console.log(forms);
 
   const saveForm = () => {
     const currentForm = {

@@ -5,6 +5,9 @@ import BasicSurvey from './BasicSurvey';
 
 const RecentSurvey = () => {
   const navigate = useNavigate();
+
+  const surveyList = JSON.parse(window.localStorage.getItem('forms'));
+
   return (
     <>
       <RecentSurveyBox>
@@ -23,7 +26,9 @@ const RecentSurvey = () => {
           </RightBox>
         </TopBox>
         <SurveyListBox>
-          <BasicSurvey id={'testForm'} />
+          {surveyList.map((info, idx) => (
+            <BasicSurvey key={idx} info={info} />
+          ))}
         </SurveyListBox>
       </RecentSurveyBox>
     </>
