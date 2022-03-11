@@ -18,26 +18,40 @@ export default function TopLabel() {
 
   return (
     <Container isScrolled={isScrolled}>
-      <button
-        onClick={() => {
-          navigate('/');
-        }}
-      >
-        홈가기
-      </button>
-      <span style={{ fontSize: '20px' }}>데이터블 폼</span>
+      <Wrapper>
+        <button
+          onClick={() => {
+            navigate('/');
+          }}
+        >
+          &lt;
+        </button>
+        <Span style={{ fontSize: '20px' }}>데이터블 폼</Span>
+        <button />
+      </Wrapper>
     </Container>
   );
 }
 
 const Container = styled.div`
   position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: pink;
   top: 0;
-  left: 0px;
+
   bottom: 0px;
   width: 100%;
   height: 76px;
   background-color: #ffffff;
+  button {
+    width: 50px;
+    font-size: 24px;
+    padding: 0 20px;
+    color: #b2b2b2;
+  }
+
   ${({ isScrolled }) => {
     if (!isScrolled) return;
     return css`
@@ -51,3 +65,12 @@ const Container = styled.div`
     cursor: default;
   }
 `;
+
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 500px;
+`;
+
+const Span = styled.span``;
