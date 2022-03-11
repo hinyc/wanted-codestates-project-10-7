@@ -23,12 +23,24 @@ const FormField = ({ onSubmitHandler }) => {
   const [fieldState, setFieldState] = useState(initialState);
   const [selectedType, setSelectedType] = useState('text');
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  const isRequiredRef = useRef();
+  const requiredRef = useRef();
   const labelRef = useRef();
   const placeholderRef = useRef();
 
   const onEditorStateChange = (editorState) => {
     setEditorState(editorState);
+
+    // draft.js로 입력 받은 내용 html 형태로 변환헤서 저장
+    const rawContentState = convertToRaw(editorState.getCurrentContent());
+    const htmlState = draftToHtml(rawContentState);
+
+    const newFieldState = {
+      ...fieldState,
+      description: htmlState,
+    };
+    // 부모 컴포넌트에 변경된 필드 상태 전달
+    updateField(newFieldState);
+
   };
   useEffect(() => {
     // console.log(fieldState);
@@ -42,22 +54,31 @@ const FormField = ({ onSubmitHandler }) => {
   const submitForm = (e) => {
     e.preventDefault();
 
-    // draft.js로 입력 받은 내용 html 형태로 변환헤서 저장
-    const rawContentState = convertToRaw(editorState.getCurrentContent());
-    const markup = draftToHtml(rawContentState);
-
-    // console.log(placeholderRef.current);  // null 출력됨
-
-    // 필드에 입력된 값들을 저장
-    setFieldState((prevState) => ({
-      ...prevState,
+  const onChangeInputHandler = (e) => {
+    // console.log(e.target.name, e.target.value);
+    const newFieldState = {
+      ...fieldState,
       type: selectedType,
-      label: labelRef.current.value,
-      required: isRequiredRef.current.checked,
-      // placeholder: placeholderRef.current.value,
-      description: markup,
-    }));
+      required: requiredRef.current.checked,
+      [e.target.name]: e.target.value,
+    };
+
+    // 부모 컴포넌트에 변경된 필드 상태 전달
+    updateField(newFieldState);
   };
+
+  const onChangeOptions = (newOptions) => {
+    const newFieldState = {
+      ...fieldState,
+      options: newOptions,
+    };
+
+    updateField(newFieldState);
+  };
+
+  useEffect(() => {
+    console.log(fieldState);
+  }, [fieldState]);
 
   return (
     <Container>
@@ -89,7 +110,10 @@ const FormField = ({ onSubmitHandler }) => {
       </div>
       <div className="placeholder-description">
         {selectedType === 'select' ? (
-          <DropDownOptionInput />
+          <DropDownOptionInput
+            options={fieldState.options}
+            changeOptions={onChangeOptions}
+          />
         ) : (
           <input
             ref={placeholderRef}
@@ -126,7 +150,6 @@ const FormField = ({ onSubmitHandler }) => {
           onEditorStateChange={onEditorStateChange}
         />
       </EditorWrapper>
-      <button onClick={submitForm}>필드 값 저장</button>
     </Container>
   );
 };
