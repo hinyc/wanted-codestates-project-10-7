@@ -16,9 +16,9 @@ const initialState = {
   options: [],
   contents: '',
 };
-const formId = 'form_' + uuidv4().slice(0, ID_LENGTH);
 
 export default function CreateForm() {
+  const formId = 'form_' + uuidv4().slice(0, ID_LENGTH);
   const [forms, setForms] = useState([]);
   const [fieldList, setFieldList] = useState([initialState]);
   const formTitleRef = useRef();
