@@ -7,6 +7,7 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import DropDownOptionInput from './DropDownOptionInput';
 import { EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
+import { v4 as uuidv4 } from 'uuid';
 
 const initialState = {
   type: 'text',
@@ -19,26 +20,36 @@ const initialState = {
 };
 
 const FormField = React.memo(function FormField({
-  index,
   fieldState,
   fieldList,
-  setFieldList,
+  updateField,
   onRemoveField,
 }) {
-  // const [fieldState, setFieldState] = useState(initialState);
   const [selectedType, setSelectedType] = useState('text');
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  const isRequiredRef = useRef();
+  const [editorAsHtml, setEditorAsHtml] = useState();
+  const requiredRef = useRef();
   const labelRef = useRef();
   const placeholderRef = useRef();
 
   const onEditorStateChange = (editorState) => {
     setEditorState(editorState);
+
+    // draft.js로 입력 받은 내용 html 형태로 변환헤서 저장
+    const rawContentState = convertToRaw(editorState.getCurrentContent());
+    const htmlState = draftToHtml(rawContentState);
+    setEditorAsHtml(htmlState);
   };
 
   const setSelectValue = ({ target: { value } }) => {
     setSelectedType(value);
-    console.log(fieldState);
+
+    const newFieldState = {
+      ...fieldState,
+      type: value,
+    };
+    // 부모 컴포넌트에 변경된 필드 상태 전달
+    updateField(newFieldState);
   };
 
   const removeClickHandler = () => {
@@ -57,7 +68,7 @@ const FormField = React.memo(function FormField({
   //     ...fieldState,
   //     type: selectedType,
   //     label: labelRef.current.value,
-  //     required: isRequiredRef.current.checked,
+  //     required: requiredRef.current.checked,
   //     // placeholder: placeholderRef.current.value,
   //     description: markup,
   //   });
@@ -66,33 +77,27 @@ const FormField = React.memo(function FormField({
   //     ...prevState,
   //     type: selectedType,
   //     label: labelRef.current.value,
-  //     required: isRequiredRef.current.checked,
+  //     required: requiredRef.current.checked,
   //     // placeholder: placeholderRef.current.value,
   //     description: markup,
   //   }));
   //   */
   // };
-  /*
+
   const onChangeInputHandler = (e) => {
-      //   // draft.js로 입력 받은 내용 html 형태로 변환헤서 저장
-    const rawContentState = convertToRaw(editorState.getCurrentContent());
-    const markup = draftToHtml(rawContentState);
-
+    // console.log(e.target.name, e.target.value);
     const newFieldState = {
-      ...fieldState,
-      [e.target.name]: e.target.value
-    }
-
-    setFieldList({
       ...fieldState,
       type: selectedType,
       label: labelRef.current.value,
-      required: isRequiredRef.current.checked,
-      // placeholder: placeholderRef.current.value,
-      description: markup,
-    });
-  }
-  */
+      required: requiredRef.current.checked,
+      [e.target.name]: e.target.value,
+      description: editorAsHtml,
+    };
+
+    // 부모 컴포넌트에 변경된 필드 상태 전달
+    updateField(newFieldState);
+  };
 
   return (
     <Container>
@@ -105,13 +110,20 @@ const FormField = React.memo(function FormField({
           <option value="file">첨부파일</option>
           <option value="agreement">이용약관</option>
         </select>
-        <FieldLabelInput ref={labelRef} name="label" type="text" id="label" />
+        <FieldLabelInput
+          ref={labelRef}
+          name="label"
+          type="text"
+          id="label"
+          onChange={onChangeInputHandler}
+          value={fieldState.label}
+        />
         <CheckBox>
           <input
             name="required"
             type="checkbox"
             id="required"
-            ref={isRequiredRef}
+            ref={requiredRef}
           />
           <label htmlFor="required">필수</label>
         </CheckBox>
