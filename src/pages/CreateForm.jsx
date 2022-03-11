@@ -4,9 +4,40 @@ import FormField from '../components/createForm/FormField';
 import DragnDrop from '../components/createForm/DragnDrop';
 import { v4 as uuidv4 } from 'uuid';
 
+import { useNavigate } from 'react-router-dom';
+const ID_LENGTH = 10;
+
+const initialState = {
+  id: 'field_' + uuidv4().slice(0, ID_LENGTH),
+  type: 'text',
+  label: '',
+  required: false,
+  placeholder: '',
+  description: '',
+  options: [],
+  contents: '',
+};
+
 export default function CreateForm() {
-  const [fieldList, setFieldList] = useState([]);
-  const [formState, setFormState] = useState({ id: uuidv4() });
+  const formId = 'form_' + uuidv4().slice(0, ID_LENGTH);
+  const [forms, setForms] = useState([]);
+  const [fieldList, setFieldList] = useState([initialState]);
+  const formTitleRef = useRef();
+  const navigate = useNavigate();
+
+  const addField = () => {
+    // fieldList에 새로운 필드 값 추가
+    console.log('add new field');
+
+    setFieldList((prevState) => {
+      return [
+        ...prevState,
+        { ...initialState, id: 'field_' + uuidv4().slice(0, ID_LENGTH) },
+      ];
+    });
+  };
+
+
 
   const formTitleRef = useRef();
 
