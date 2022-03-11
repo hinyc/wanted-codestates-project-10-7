@@ -5,9 +5,9 @@ import { ReactComponent as UpDownArrow } from '../../assets/icon-up-down.svg';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import DropDownOptionInput from './DropDownOptionInput';
+
 import { EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
-import { v4 as uuidv4 } from 'uuid';
 
 const initialState = {
   type: 'text',
@@ -19,12 +19,8 @@ const initialState = {
   contents: '',
 };
 
-const FormField = React.memo(function FormField({
-  fieldState,
-  fieldList,
-  updateField,
-  onRemoveField,
-}) {
+const FormField = ({ onSubmitHandler }) => {
+  const [fieldState, setFieldState] = useState(initialState);
   const [selectedType, setSelectedType] = useState('text');
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const requiredRef = useRef();
@@ -44,22 +40,19 @@ const FormField = React.memo(function FormField({
     };
     // 부모 컴포넌트에 변경된 필드 상태 전달
     updateField(newFieldState);
+
   };
+  useEffect(() => {
+    // console.log(fieldState);
+    onSubmitHandler(fieldState);
+  }, [fieldState]);
 
   const setSelectValue = ({ target: { value } }) => {
     setSelectedType(value);
-
-    const newFieldState = {
-      ...fieldState,
-      type: value,
-    };
-    // 부모 컴포넌트에 변경된 필드 상태 전달
-    updateField(newFieldState);
   };
 
-  const removeClickHandler = () => {
-    onRemoveField(fieldState.id);
-  };
+  const submitForm = (e) => {
+    e.preventDefault();
 
   const onChangeInputHandler = (e) => {
     // console.log(e.target.name, e.target.value);
@@ -98,27 +91,20 @@ const FormField = React.memo(function FormField({
           <option value="file">첨부파일</option>
           <option value="agreement">이용약관</option>
         </select>
-        <FieldLabelInput
-          ref={labelRef}
-          name="label"
-          type="text"
-          id="label"
-          onChange={onChangeInputHandler}
-          value={fieldState.label}
-        />
+        <input ref={labelRef} name="label" type="text" id="label" />
         <CheckBox>
           <input
             name="required"
             type="checkbox"
             id="required"
-            ref={requiredRef}
+            ref={isRequiredRef}
           />
           <label htmlFor="required">필수</label>
         </CheckBox>
         <button className="drag-button">
           <UpDownArrow />
         </button>
-        <button className="delete-button" onClick={removeClickHandler}>
+        <button className="delete-button">
           <CloseIcon fill="#fff" />
         </button>
       </div>
@@ -166,7 +152,7 @@ const FormField = React.memo(function FormField({
       </EditorWrapper>
     </Container>
   );
-});
+};
 const Container = styled.form`
   width: 100%;
   border: 1px solid #f2f2f2;
@@ -193,6 +179,15 @@ const Container = styled.form`
     option {
       background-color: #fff;
     }
+  }
+  #labelName {
+    width: 50%;
+    height: 36px;
+    padding: 5px;
+    border-right: 1px solid #f2f2f2;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 15px;
   }
   button {
     width: 36px;
@@ -226,16 +221,6 @@ const Container = styled.form`
     }
   }
 `;
-const FieldLabelInput = styled.input`
-  width: 50%;
-  height: 36px;
-  padding: 5px;
-  border-right: 1px solid #f2f2f2;
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 15px;
-`;
-
 const CheckBox = styled.div`
   width: 55px;
   height: 36px;

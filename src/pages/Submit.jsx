@@ -53,7 +53,6 @@ export default function Submit() {
 
   return (
     <Container>
-
       <Wrapper>
         {form.map((el) => {
           return <Form key={el.id} data={el} />;
