@@ -82,10 +82,10 @@ export default function CreateForm() {
   return (
     <Wrapper>
       <h1>폼 형식 생성</h1>
-      <section style={{ display: 'flex', flexDirection: 'column' }}>
+      <FormTitleWrapper>
         <label htmlFor="formTitle">제목</label>
         <input ref={formTitleRef} type="text" name="formTitle" id="formTitle" />
-      </section>
+      </FormTitleWrapper>
       <section style={{ display: 'flex', flexDirection: 'column' }}>
         <label>필드목록</label>
         {fieldList.map((field) => {
@@ -122,6 +122,7 @@ const Wrapper = styled.div`
   h1 {
     font-size: 24px;
     text-align: center;
+    padding: 20px 0;
   }
 
   label {
@@ -131,12 +132,6 @@ const Wrapper = styled.div`
     font-size: 15px;
     font-weight: 700;
     line-height: 16px;
-  }
-  #formTitle {
-    width: 100%;
-    height: 30px;
-    border: 1px solid #f2f2f2;
-    border-radius: 7px;
   }
 
   #add-field-button {
@@ -150,5 +145,23 @@ const Wrapper = styled.div`
     color: #fff;
     border-radius: 10px;
     margin: 10px 0;
+  }
+`;
+const FormTitleWrapper = styled.section`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+
+  #formTitle {
+    width: 100%;
+    height: 40px;
+    font-size: 1rem;
+    padding: 0 10px;
+    border: 1px solid #f2f2f2;
+    border-radius: 7px;
+
+    :focus {
+      outline: none;
+    }
   }
 `;
