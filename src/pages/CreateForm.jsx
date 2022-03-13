@@ -56,15 +56,13 @@ export default function CreateForm() {
   });
 
   useEffect(() => {
-    console.log(fieldList);
+    // console.log(fieldList);
     if (window.localStorage.getItem('forms')) {
       setForms(JSON.parse(window.localStorage.getItem('forms')));
     } else {
       window.localStorage.setItem('forms', []);
     }
   }, [fieldList]);
-
-  console.log(forms);
 
   const saveForm = () => {
     const currentForm = {
@@ -84,10 +82,10 @@ export default function CreateForm() {
   return (
     <Wrapper>
       <h1>폼 형식 생성</h1>
-      <section style={{ display: 'flex', flexDirection: 'column' }}>
+      <FormTitleWrapper>
         <label htmlFor="formTitle">제목</label>
         <input ref={formTitleRef} type="text" name="formTitle" id="formTitle" />
-      </section>
+      </FormTitleWrapper>
       <section style={{ display: 'flex', flexDirection: 'column' }}>
         <label>필드목록</label>
         {fieldList.map((field) => {
@@ -110,79 +108,6 @@ export default function CreateForm() {
       <DragnDrop />
     </Wrapper>
   );
-
-  /* ------------------ 여기부터 원래 코드 ----------- */
-  // // const [fieldList, setFieldList] = useState([initialState]);
-  // const [fieldList, setFieldList] = useState(new Map([[initialState.id, initialState]]))
-  // const [formState, setFormState] = useState({
-  //   formId: uuidv4().slice(0, ID_LENGTH),
-  // });
-  // const formTitleRef = useRef();
-
-  // const onSubmitHandler = useCallback((fieldFormData) => {
-  //   // 저장하기 버튼 클릭시 각 필드의 input 값들 전부 저장하기
-  //   setFieldList((prevList) => [...prevList, fieldFormData]);
-
-  //   // 필드의 id 번호로 fieldList에서 해당하는 필드 내용 업데이트
-  //   setFieldList()
-
-  //   setFormState({
-  //     formId: uuidv4(),
-  //     title: formTitleRef.current.value,
-  //     fieldList: [fieldFormData],
-  //   });
-  // }, []);
-
-  // const getFieldInputs = () => {};
-
-  // const saveForm = () => {
-  //   console.log(formState);
-  //   window.localStorage.setItem(formState.formId, JSON.stringify(formState));
-  // };
-
-  // const addField = () => {
-  //   setFieldList((prev) => {
-  //     return [
-  //       ...prev,
-  //       { ...initialState, id: 'field_' + uuidv4().slice(0, ID_LENGTH) },
-  //     ];
-  //   });
-  // };
-  // useEffect(() => {
-  //   console.log(fieldList);
-  //   console.log(formState);
-  // }, [fieldList]);
-
-  // return (
-  //   <Wrapper>
-  //     <h1>폼 형식 생성</h1>
-  //     <section style={{ display: 'flex', flexDirection: 'column' }}>
-  //       <label htmlFor="formTitle">제목</label>
-  //       <input ref={formTitleRef} type="text" name="formTitle" id="formTitle" />
-  //     </section>
-  //     <section style={{ display: 'flex', flexDirection: 'column' }}>
-  //       <label>필드목록</label>
-  //       {fieldList.map((field, idx) => {
-  //         return (
-  //           <FormField
-  //             key={idx}
-  //             fieldState={field}
-  //             onSubmitHandler={onSubmitHandler}
-  //           />
-  //         );
-  //       })}
-  //       {/* <FormField
-  //         fieldState={fieldList[0]}
-  //         onSubmitHandler={onSubmitHandler}
-  //       /> */}
-  //     </section>
-  //     <button id="add-field-button" onClick={addField}>
-  //       필드 추가하기
-  //     </button>
-  //     <button onClick={saveForm}>저장하기</button>
-  //     <DragnDrop />
-  //   </Wrapper>
-  // );
 }
 
 const Wrapper = styled.div`
@@ -197,6 +122,7 @@ const Wrapper = styled.div`
   h1 {
     font-size: 24px;
     text-align: center;
+    padding: 20px 0;
   }
 
   label {
@@ -206,12 +132,6 @@ const Wrapper = styled.div`
     font-size: 15px;
     font-weight: 700;
     line-height: 16px;
-  }
-  #formTitle {
-    width: 100%;
-    height: 30px;
-    border: 1px solid #f2f2f2;
-    border-radius: 7px;
   }
 
   #add-field-button {
@@ -225,5 +145,23 @@ const Wrapper = styled.div`
     color: #fff;
     border-radius: 10px;
     margin: 10px 0;
+  }
+`;
+const FormTitleWrapper = styled.section`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+
+  #formTitle {
+    width: 100%;
+    height: 40px;
+    font-size: 1rem;
+    padding: 0 10px;
+    border: 1px solid #f2f2f2;
+    border-radius: 7px;
+
+    :focus {
+      outline: none;
+    }
   }
 `;

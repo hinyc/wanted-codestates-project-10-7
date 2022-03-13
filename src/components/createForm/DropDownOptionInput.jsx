@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 export default function DropDownOptionInput({ options, changeOptions }) {
-  // const [options, setOptions] = useState([]);
   // 데이터 형식: { text: null, id: uuidv4() }
   const [value, setValue] = useState('');
 
@@ -46,29 +45,17 @@ export default function DropDownOptionInput({ options, changeOptions }) {
     if (!res) setValue(e.target.value);
     else {
       const mathcedStr = res[1];
-      // setOptions((prevOption) => [
-      //   ...prevOption,
-      //   { text: mathcedStr, id: uuidv4() },
-      // ]);
-      changeOptions(() => {
-        return [...options, { text: mathcedStr, id: uuidv4() }];
-      });
+      changeOptions([...options, { text: mathcedStr, id: uuidv4() }]);
       setValue('');
     }
   };
   const deleteBlock = (id) => {
-    // setOptions(options.filter((opt) => opt.id !== id));
     changeOptions(options.filter((opt) => opt.id !== id));
   };
-
-  useEffect(() => {
-    console.log(options);
-  }, []);
 
   return (
     <Container>
       {options.map(({ text, id }) => {
-        console.log(options);
         return (
           <>
             {text && (
