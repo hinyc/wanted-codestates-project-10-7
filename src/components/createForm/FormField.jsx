@@ -44,12 +44,22 @@ const FormField = React.memo(function FormField({
       return;
     }
 
+    // 이용약관 항목이 필드 값으로 선택된 경우 description이 아닌 contents 에 값 저장
+    if (selectedType === 'agreement') {
+      updateField({
+        ...fieldState,
+        contents: editorAsHtml,
+      });
+
+      return;
+    }
+
+    // 그 외 일반적인 경우
     const newFieldState = {
       ...fieldState,
       description: htmlState,
     };
 
-    // 부모 컴포넌트에 변경된 필드 상태 전달
     updateField(newFieldState);
   };
 
@@ -101,7 +111,7 @@ const FormField = React.memo(function FormField({
 
   return (
     <FormContainer>
-      <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+      <RequiredInputs>
         <select name="type" onChange={setSelectValue} value={selectedType}>
           <option value="text">텍스트</option>
           <option value="phone">전화번호</option>
@@ -134,9 +144,9 @@ const FormField = React.memo(function FormField({
         <button className="delete-button" onClick={removeClickHandler}>
           <CloseIcon fill="#fff" />
         </button>
-      </div>
+      </RequiredInputs>
       <div className="placeholder-description">
-        {selectedType === 'select' ? (
+        {/* {selectedType === 'select' ? (
           <DropDownOptionInput
             options={fieldState.options}
             changeOptions={changeOptions}
@@ -150,6 +160,23 @@ const FormField = React.memo(function FormField({
             value={fieldState.placeholder}
             onChange={onChangeInputHandler}
           />
+        )} */}
+        {selectedType === 'select' ? (
+          <DropDownOptionInput
+            options={fieldState.options}
+            changeOptions={changeOptions}
+          />
+        ) : selectedType === 'text' || selectedType === 'phone' ? (
+          <input
+            name="placeholder"
+            ref={placeholderRef}
+            type="text"
+            placeholder="플레이스홀더 예"
+            value={fieldState.placeholder}
+            onChange={onChangeInputHandler}
+          />
+        ) : (
+          ''
         )}
       </div>
       <EditorWrapper>
@@ -230,25 +257,32 @@ const FormContainer = styled.div`
   .placeholder-description {
     width: 100%;
     height: 36px;
+    height: auto;
     padding: 0 10px;
-    border-top: 1px solid #f2f2f2;
+    // border-top: 1px solid #f2f2f2;
 
     input {
       width: 100%;
-      height: 100%;
+      height: 36px;
       font-size: 15px;
       font-weight: 500;
       line-height: 15px;
     }
   }
 `;
+const RequiredInputs = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid #f2f2f2;
+`;
 const FieldLabelInput = styled.input`
   width: 50%;
   height: 36px;
-  padding: 5px;
+  padding: 5px 10px;
   border-right: 1px solid #f2f2f2;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 15px;
 `;
 
