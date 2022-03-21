@@ -5,8 +5,9 @@
 ### 📎 &nbsp; [과제링크](https://nervous-morse-45f438.netlify.app/)
 
 <div align="center">
-<img width="300px" src=""/>
+<img width="500px" src="https://user-images.githubusercontent.com/87487161/159200284-eea1cf14-aed5-491f-a9f9-30365e876c54.png"/>
 </div>
+
 
 <br />
 
