@@ -8,7 +8,12 @@ export const addSubmitData = (key, value) => ({
 });
 export const initSubmitData = (key, value) => ({ type: INIT_SUBMIT_DATA });
 
-const initialState = {};
+const initialState = {
+  name: null,
+  phone: null,
+  address: null,
+  agreement_0: null,
+};
 
 export default function submit(state = initialState, action) {
   switch (action.type) {
@@ -18,7 +23,14 @@ export default function submit(state = initialState, action) {
         [action.key]: action.value,
       };
     case INIT_SUBMIT_DATA:
-      return {};
+      return {
+        ...state,
+        name: null,
+        phone: null,
+        address: null,
+
+        agreement_0: null,
+      };
     default:
       return state;
   }

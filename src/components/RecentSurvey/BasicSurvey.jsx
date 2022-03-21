@@ -45,24 +45,25 @@ const form = [
   },
 ];
 
-const BasicSurvey = ({ id }) => {
+const BasicSurvey = ({ info }) => {
+  console.log(info);
   const navigate = useNavigate();
   const moveHandler = () => {
     window.localStorage.setItem('testForm', JSON.stringify(form));
-    navigate(`/submit/${id}`);
+    navigate(`/submit/${info.id}`);
   };
   return (
     <>
       <BasicSurveyBox>
         <TopBox onClick={moveHandler}>
           <p className="note_icons">📄</p>
-          <h1>기본 설문지</h1>
+          <h1>{info.title}</h1>
         </TopBox>
         <BottomBox>
           <p
             className="on_list"
             onClick={() => {
-              navigate(`/submit/${id}/list`);
+              navigate(`/submit/${info.id}/list`);
             }}
           >
             제출목록

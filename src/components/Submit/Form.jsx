@@ -15,9 +15,11 @@ export default function Form({ data }) {
   const dispatch = useDispatch();
 
   const value = useRef('');
+  const submitData = useSelector((state) => state.submit);
+  const submitDataName = useSelector((state) => state.submit.Name);
+  const submitDataPhone = useSelector((state) => state.submit.Phone);
   const id = data.id;
   const type = data.type;
-  const submitData = useSelector((state) => state.submit);
   const eventHandler = (e) => {
     const currentValue = value.current.value;
     switch (data.type) {
@@ -25,13 +27,12 @@ export default function Form({ data }) {
         if (e.type === 'change') {
           if (currentValue.length) setShowVerification(false);
           else setShowVerification(true);
+          dispatch(addSubmitData(data.id, e.target.value));
         }
         if (e.type === 'focus') {
           if (!currentValue.length) setShowVerification(true);
         }
-        if (e.type === 'blur') {
-          dispatch(addSubmitData(data.id, e.target.value));
-        }
+
         break;
       case 'phone':
         dispatch(addSubmitData(data.id, e.target.value));
@@ -74,6 +75,7 @@ export default function Form({ data }) {
             onFocus={eventHandler}
             onBlur={eventHandler}
             placeholder={data.placeholder && data.placeholder}
+            value={submitDataName}
           />
           {id === 'name' ? (
             <div className="verification">
@@ -86,7 +88,7 @@ export default function Form({ data }) {
       {type === 'phone' && (
         <FormSt>
           <label>{data.required ? data.label : `${data.label}(선택)`}</label>
-          <input onBlur={eventHandler} />
+          <input onChange={eventHandler} value={submitDataPhone} />
         </FormSt>
       )}
 

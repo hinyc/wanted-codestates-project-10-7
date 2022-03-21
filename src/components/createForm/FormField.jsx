@@ -1,11 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as CloseIcon } from '../../assets/icon-close.svg';
 import { ReactComponent as UpDownArrow } from '../../assets/icon-up-down.svg';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import DropDownOptionInput from './DropDownOptionInput';
-
 import { EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 
@@ -19,50 +18,101 @@ const initialState = {
   contents: '',
 };
 
-const FormField = ({ onSubmitHandler }) => {
-  const [fieldState, setFieldState] = useState(initialState);
+const FormField = React.memo(function FormField({
+  fieldState,
+  fieldList,
+  updateField,
+  onRemoveField,
+}) {
   const [selectedType, setSelectedType] = useState('text');
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  const isRequiredRef = useRef();
+  const [editorAsHtml, setEditorAsHtml] = useState();
+  const requiredRef = useRef();
   const labelRef = useRef();
   const placeholderRef = useRef();
 
   const onEditorStateChange = (editorState) => {
     setEditorState(editorState);
+
+    // draft.js로 입력 받은 내용 html 형태로 변환해서 저장
+    const rawContentState = convertToRaw(editorState.getCurrentContent());
+    const htmlState = draftToHtml(rawContentState);
+    setEditorAsHtml(htmlState);
+
+    // 에디터 내용이 바뀌지 않았을 경우 상태 값 업데이트 하지 않고 리턴
+    if (htmlState === editorAsHtml) {
+      return;
+    }
+
+    // 이용약관 항목이 필드 값으로 선택된 경우 description이 아닌 contents 에 값 저장
+    if (selectedType === 'agreement') {
+      updateField({
+        ...fieldState,
+        contents: editorAsHtml,
+      });
+
+      return;
+    }
+
+    // 그 외 일반적인 경우
+    const newFieldState = {
+      ...fieldState,
+      description: htmlState,
+    };
+
+    updateField(newFieldState);
   };
-  useEffect(() => {
-    // console.log(fieldState);
-    onSubmitHandler(fieldState);
-  }, [fieldState]);
 
   const setSelectValue = ({ target: { value } }) => {
     setSelectedType(value);
+
+    const newFieldState = {
+      ...fieldState,
+      type: value,
+    };
+    // 부모 컴포넌트에 변경된 필드 상태 전달
+    updateField(newFieldState);
   };
 
-  const submitForm = (e) => {
-    e.preventDefault();
+  const removeClickHandler = () => {
+    onRemoveField(fieldState.id);
+  };
 
-    // draft.js로 입력 받은 내용 html 형태로 변환헤서 저장
-    const rawContentState = convertToRaw(editorState.getCurrentContent());
-    const markup = draftToHtml(rawContentState);
+  const onChangeInputHandler = (e) => {
+    // 필수 여부 체크박스 상태가 변경된 경우
+    if (e.target.name === 'required') {
+      updateField({
+        ...fieldState,
+        required: requiredRef.current.checked,
+      });
 
-    // console.log(placeholderRef.current);  // null 출력됨
+      return;
+    }
 
-    // 필드에 입력된 값들을 저장
-    setFieldState((prevState) => ({
-      ...prevState,
-      type: selectedType,
-      label: labelRef.current.value,
-      required: isRequiredRef.current.checked,
-      // placeholder: placeholderRef.current.value,
-      description: markup,
-    }));
+    // 그 외 필드 인풋 값이 바뀐 경우
+    const newFieldState = {
+      ...fieldState,
+      // required: requiredRef.current.checked,
+      [e.target.name]: e.target.value,
+    };
+
+    // 부모 컴포넌트에 변경된 필드 상태 전달
+    updateField(newFieldState);
+  };
+
+  const changeOptions = (newOptions) => {
+    const newFieldState = {
+      ...fieldState,
+      options: newOptions,
+    };
+
+    updateField(newFieldState);
   };
 
   return (
-    <Container>
-      <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
-        <select name="type" onChange={setSelectValue}>
+    <FormContainer>
+      <RequiredInputs>
+        <select name="type" onChange={setSelectValue} value={selectedType}>
           <option value="text">텍스트</option>
           <option value="phone">전화번호</option>
           <option value="address">주소</option>
@@ -70,32 +120,63 @@ const FormField = ({ onSubmitHandler }) => {
           <option value="file">첨부파일</option>
           <option value="agreement">이용약관</option>
         </select>
-        <input ref={labelRef} name="label" type="text" id="label" />
+        <FieldLabelInput
+          ref={labelRef}
+          name="label"
+          type="text"
+          id="label"
+          onChange={onChangeInputHandler}
+          value={fieldState.label}
+        />
         <CheckBox>
           <input
             name="required"
             type="checkbox"
-            id="required"
-            ref={isRequiredRef}
+            id={`required_${fieldState.id}`}
+            ref={requiredRef}
+            onChange={onChangeInputHandler}
           />
-          <label htmlFor="required">필수</label>
+          <label htmlFor={`required_${fieldState.id}`}>필수</label>
         </CheckBox>
         <button className="drag-button">
           <UpDownArrow />
         </button>
-        <button className="delete-button">
+        <button className="delete-button" onClick={removeClickHandler}>
           <CloseIcon fill="#fff" />
         </button>
-      </div>
+      </RequiredInputs>
       <div className="placeholder-description">
-        {selectedType === 'select' ? (
-          <DropDownOptionInput />
+        {/* {selectedType === 'select' ? (
+          <DropDownOptionInput
+            options={fieldState.options}
+            changeOptions={changeOptions}
+          />
         ) : (
           <input
+            name="placeholder"
             ref={placeholderRef}
             type="text"
             placeholder="플레이스홀더 예"
+            value={fieldState.placeholder}
+            onChange={onChangeInputHandler}
           />
+        )} */}
+        {selectedType === 'select' ? (
+          <DropDownOptionInput
+            options={fieldState.options}
+            changeOptions={changeOptions}
+          />
+        ) : selectedType === 'text' || selectedType === 'phone' ? (
+          <input
+            name="placeholder"
+            ref={placeholderRef}
+            type="text"
+            placeholder="플레이스홀더 예"
+            value={fieldState.placeholder}
+            onChange={onChangeInputHandler}
+          />
+        ) : (
+          ''
         )}
       </div>
       <EditorWrapper>
@@ -126,11 +207,10 @@ const FormField = ({ onSubmitHandler }) => {
           onEditorStateChange={onEditorStateChange}
         />
       </EditorWrapper>
-      <button onClick={submitForm}>필드 값 저장</button>
-    </Container>
+    </FormContainer>
   );
-};
-const Container = styled.form`
+});
+const FormContainer = styled.div`
   width: 100%;
   border: 1px solid #f2f2f2;
   border-radius: 7px;
@@ -157,15 +237,6 @@ const Container = styled.form`
       background-color: #fff;
     }
   }
-  #labelName {
-    width: 50%;
-    height: 36px;
-    padding: 5px;
-    border-right: 1px solid #f2f2f2;
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 15px;
-  }
   button {
     width: 36px;
     height: 36px;
@@ -186,18 +257,35 @@ const Container = styled.form`
   .placeholder-description {
     width: 100%;
     height: 36px;
+    height: auto;
     padding: 0 10px;
-    border-top: 1px solid #f2f2f2;
+    // border-top: 1px solid #f2f2f2;
 
     input {
       width: 100%;
-      height: 100%;
+      height: 36px;
       font-size: 15px;
       font-weight: 500;
       line-height: 15px;
     }
   }
 `;
+const RequiredInputs = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid #f2f2f2;
+`;
+const FieldLabelInput = styled.input`
+  width: 50%;
+  height: 36px;
+  padding: 5px 10px;
+  border-right: 1px solid #f2f2f2;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 15px;
+`;
+
 const CheckBox = styled.div`
   width: 55px;
   height: 36px;
