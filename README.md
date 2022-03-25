@@ -100,7 +100,8 @@
 <details>
   <summary>전용태</summary>
   <ul>
-    <li>  </li>
+    <li>주소 검색 UI 구현</li>
+    <li>react-daum-postcode 사용하여 주소검색 기능 구현하기</li>
   </ul>
 </details>
 
