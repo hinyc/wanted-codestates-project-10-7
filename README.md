@@ -92,8 +92,9 @@
 </details>
 <details>
   <summary>우혁주</summary>
+  폼 생성페이지 드래그 앤 드롭
     <ul>
-      <li> </li>
+      <li>드래그 앤 드롭(미완)</li>
     </ul>
 </details>
 <details>
