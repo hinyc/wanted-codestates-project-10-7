@@ -75,7 +75,8 @@
 <details>
   <summary>홍인열</summary>
   <ul>
-   <li> </li>
+   <li> 폼 객체를 기반으로 설문 컴포넌트 생성 </li>
+    <li> 유효성 검사 기능추가 </li>
   </ul>
 </details>
 <details>
