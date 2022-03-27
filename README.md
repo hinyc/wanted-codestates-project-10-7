@@ -87,9 +87,13 @@
 </details>
 <details>
   <summary>복지호</summary>
-  <ul>
-   <li></li>
-  </ul>
+  
+  - 폼 형식 생성 페이지
+    - 필드 컴포넌트 구현
+    - 필드 추가/삭제 기능 구현
+    - 선택된 필드 타입에 따라 노출되는 입력 필드 다르게 구현
+    - 입력 받은 폼 필드 형식 저장하기 버튼 클릭시 로컬 스토리지에 데이터 저장
+  
 </details>
 <details>
   <summary>우혁주</summary>
